@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <?!= include('UI_SharedStyles'); ?>
+
+    <style>
+        /* ── Base: color invertido ── */
+        body {
+            background-color: #FFFFFF !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── Header: siempre arriba ── */
+        .intro-header {
+            text-align: center;
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+
+        .intro-header h1 {
+            color: var(--primary-dark);
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .intro-header p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin: 0;
+        }
+
+
+
+        /* ── Paneles y Cajas (Color invertido: fondo #eff2f9) ── */
+        .panel {
+            background-color: #eff2f9 !important;
+            border: 1px solid #d4dbe8;
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .btn-secondary {
+            background-color: #eff2f9 !important;
+            color: var(--primary-color) !important;
+            border: 1px solid #d4dbe8 !important;
+        }
+
+        .panel .form-input, .panel .form-select,
+        #dynamicFields .form-input, #dynamicFields .form-select,
+        #accountSelectorWrapper .form-input {
+            background-color: #FFFFFF !important;
+        }
+
+        /* ── Animaciones ── */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .anim-up { animation: fadeSlideUp 0.35s ease both; }
+        .anim-in { animation: fadeIn 0.4s ease both; }
+
+        .hidden { display: none !important; }
+
+        /* ── Success State: centrado absoluto ── */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease both;
+        }
+
+        .success-icon {
+            background-color: var(--success-bg);
+            color: var(--success);
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        /* ── Loader ── */
+        .loading-overlay {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000; backdrop-filter: blur(2px);
+        }
+
+        .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid #e2e8f0; border-top-color: #34475d;
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .form-label-sm {
+            display: block; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--text-secondary); margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader" class="loading-overlay">
+    <div class="spinner"></div>
+</div>
+
+<div id="successState" class="success-overlay hidden">
+    <div class="success-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+    </div>
+    <h2 id="successTitle" style="color:var(--primary-color); margin-bottom:8px;">¡Registro Creado!</h2>
+    <p id="successMessage" style="color:var(--text-secondary); margin-bottom:32px;"></p>
+    <div style="display:flex; gap:12px;">
+        <button type="button" class="btn btn-secondary" onclick="google.script.host.close()">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="resetFormForNew()">Gestionar otro</button>
+    </div>
+</div>
+
+<div class="container container-xs">
+    <!-- El Header siempre arriba -->
+    <div class="intro-header" id="introHeader">
+        <h1>Plan de Cuentas</h1>
+        <p id="introSubtitle">Alta, Baja y Modificación de Categorías</p>
+    </div>
+        
+        <form id="abmForm" onsubmit="handleFormSubmit(event)">
+            
+            <!-- Panel Selector de Categoría (Centrado verticalmente mientras no hay selección) -->
+            <div class="panel" id="categoryPanel">
+                <label for="entityType" class="form-label-sm">Categoría</label>
+                <select id="entityType" name="entityType" class="form-select" required onchange="handleEntityChange()">
+                    <option value="" disabled selected>¿Qué categoría querés gestionar?</option>
+                    <option value="INGRESOS">Ingresos y recursos</option>
+                    <option value="COSTOS">Costo de ventas</option>
+                    <option value="GASTOS">Gastos</option>
+                    <option value="FISCAL">Carga Fiscal</option>
+                    <option value="RESULTADOS">Resultados</option>
+                    <option value="MEDIOS_PAGO">Medios de Pago</option>
+                </select>
+            </div>
+
+            <!-- Selector de Modo (Aparece tras elegir categoría) -->
+            <div id="modeSelectorWrapper" class="hidden anim-up" style="display:flex; gap:12px; margin-bottom:16px;">
+                <button type="button" id="btnModeCreate" class="btn btn-secondary" style="flex:1;" onclick="setMode('CREATE')">Nueva Cuenta</button>
+                <button type="button" id="btnModeUpdate" class="btn btn-secondary" style="flex:1;" onclick="setMode('UPDATE')">Modificar / Eliminar</button>
+            </div>
+
+            <!-- Alertas - (Sin class="panel" para que el CSS !important no pise sus colores) -->
+            <div id="errorAlert" class="hidden" style="background:#FEE2E2; color:#DC2626; border-color:#F87171; padding:16px; border-radius:8px; border-width:1px; border-style:solid; margin-bottom:16px;">
+                <span id="errorMessageText"></span>
+            </div>
+            <div id="updateAlert" class="hidden" style="background:#FEF3C7; color:#B45309; border-color:#FCD34D; padding:16px; border-radius:8px; border-width:1px; border-style:solid; margin-bottom:16px;">
+                <strong>Modificación:</strong> Los cambios afectarán al historial de esta cuenta.
+            </div>
+            <div id="deleteAlert" class="hidden" style="background:#FEE2E2; color:#DC2626; border-color:#F87171; padding:16px; border-radius:8px; border-width:1px; border-style:solid; margin-bottom:16px;">
+                <strong>Baja definitiva:</strong> ¿Estás seguro? Esta acción no puede deshacerse.
+            </div>
+
+            <!-- Buscador (Modo UPDATE) -->
+            <div id="accountSelectorWrapper" class="hidden panel anim-up">
+                <label for="existingAccountInput" class="form-label-sm">Buscá la cuenta</label>
+                <input type="text" id="existingAccountInput" class="form-input" list="accountDataList" placeholder="Tipeá para filtrar..." oninput="handleAccountSelection()" disabled>
+                <datalist id="accountDataList"></datalist>
+            </div>
+
+            <!-- Campos del Formulario -->
+            <div id="dynamicFields" class="hidden anim-up">
+                <div class="form-group">
+                    <label id="lblNombre" for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej. Cuentas a cobrar locales..." required>
+                </div>
+
+                <div id="groupUenRel" class="form-group hidden">
+                    <label for="uenRelacionada" class="form-label">Unidad de Negocio (UEN) <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Obligatorio)</span></label>
+                    <select id="uenRelacionada" name="uenRelacionada" class="form-select"></select>
+                </div>
+
+                <div id="groupMonedaRel" class="form-group hidden">
+                    <label for="monedaRelacionada" class="form-label">Moneda <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Por Defecto ARS)</span></label>
+                    <select id="monedaRelacionada" name="monedaRelacionada" class="form-select"></select>
+                </div>
+
+                <div id="groupProyectoRel" class="form-group hidden">
+                    <label for="proyectoRelacionado" class="form-label">Proyecto <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Opcional)</span></label>
+                    <select id="proyectoRelacionado" name="proyectoRelacionado" class="form-select"></select>
+                </div>
+            </div>
+
+            <!-- Botones Universales siempre visibles abajo del formulario -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:16px; border-top:1px solid #e2e8f0;">
+                <div>
+                    <button type="button" class="btn btn-danger hidden" id="btnDelete" onclick="handleDeleteClick()">Eliminar</button>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn btn-secondary" onclick="google.script.host.close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Guardar</button>
+                </div>
+            </div>
+
+        </form>
+</div>
+
+<script>
+    let systemData = { monedas: [], proyectos: [] };
+    let currentMode = null;
+    let currentEntityData = [];
+    let selectedAccount = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        google.script.run
+            .withSuccessHandler(data => {
+                systemData = data;
+                
+                const u = document.getElementById('uenRelacionada');
+                u.innerHTML = '<option value="" disabled selected>Seleccioná UEN...</option>';
+                data.uens.forEach(x => u.innerHTML += `<option value="${x}">${x}</option>`);
+
+                const m = document.getElementById('monedaRelacionada');
+                m.innerHTML = '<option value="ARS" selected>ARS</option>';
+                data.monedas.forEach(x => { if(x !== "ARS") m.innerHTML += `<option value="${x}">${x}</option>`; });
+
+                const p = document.getElementById('proyectoRelacionado');
+                p.innerHTML = '<option value="">Ninguno (General)</option>';
+                data.proyectos.forEach(x => p.innerHTML += `<option value="${x}">${x}</option>`);
+                document.getElementById('loader').classList.add('hidden');
+            })
+            .withFailureHandler(err => {
+                document.getElementById('loader').classList.add('hidden');
+                console.error(err);
+            })
+            .getAbmFormData();
+    });
+
+    function handleEntityChange() {
+        const entity = document.getElementById('entityType').value;
+        
+        hideAllAlerts();
+        selectedAccount = null;
+        currentMode = null;
+        
+        document.getElementById('btnModeCreate').className = 'btn btn-secondary';
+        document.getElementById('btnModeUpdate').className = 'btn btn-secondary';
+
+        if (!entity) {
+            document.getElementById('modeSelectorWrapper').classList.add('hidden');
+            document.getElementById('dynamicFields').classList.add('hidden');
+            return;
+        }
+
+        const ms = document.getElementById('modeSelectorWrapper');
+        ms.classList.remove('hidden');
+        ms.style.display = 'flex';
+        
+        document.getElementById('dynamicFields').classList.add('hidden');
+        document.getElementById('accountSelectorWrapper').classList.add('hidden');
+
+        // Configuración de campos
+        const lbl = document.getElementById('lblNombre');
+        const gU = document.getElementById('groupUenRel');
+        const gM = document.getElementById('groupMonedaRel');
+        const gP = document.getElementById('groupProyectoRel');
+        [gU, gM, gP].forEach(x => x.classList.add('hidden'));
+
+        // La UEN es obligatoria para todos siempre
+        gU.classList.remove('hidden');
+
+        if(entity === 'MEDIOS_PAGO') { 
+            lbl.textContent = 'Medio Bancario / Billetera'; 
+            gM.classList.remove('hidden'); 
+            gP.classList.remove('hidden'); 
+        } else if(entity === 'RESULTADOS') {
+            lbl.textContent = 'Nombre de Resultado'; 
+        } else { 
+            lbl.textContent = 'Nombre de Cuenta'; 
+            gP.classList.remove('hidden'); 
+        }
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        const btnC = document.getElementById('btnModeCreate');
+        const btnU = document.getElementById('btnModeUpdate');
+        const entityValue = document.getElementById('entityType').value; // Guardar valor antes de reset
+        hideAllAlerts();
+
+        if(mode === 'CREATE') {
+            btnC.className = 'btn btn-primary';
+            btnU.className = 'btn btn-secondary';
+            document.getElementById('abmForm').reset();
+            document.getElementById('entityType').value = entityValue; // Restaurar valor guardado
+            document.getElementById('accountSelectorWrapper').classList.add('hidden');
+            document.getElementById('dynamicFields').classList.remove('hidden');
+            document.getElementById('btnSubmit').textContent = 'Guardar';
+            document.getElementById('btnDelete').classList.add('hidden');
+        } else {
+            btnU.className = 'btn btn-primary';
+            btnC.className = 'btn btn-secondary';
+            document.getElementById('dynamicFields').classList.add('hidden');
+            const as = document.getElementById('accountSelectorWrapper');
+            as.classList.remove('hidden');
+            const inp = document.getElementById('existingAccountInput');
+            inp.value = ''; inp.placeholder = 'Buscando...'; inp.disabled = true;
+            
+            google.script.run
+                .withSuccessHandler(data => {
+                    currentEntityData = data;
+                    const dl = document.getElementById('accountDataList');
+                    dl.innerHTML = '';
+                    data.forEach(x => dl.innerHTML += `<option value="${x.nombre}"></option>`);
+                    inp.placeholder = 'Tipéá para filtrar...'; inp.disabled = false; inp.focus();
+                })
+                .getCategoryAccounts(document.getElementById('entityType').value);
+        }
+    }
+
+    function handleAccountSelection() {
+        const val = document.getElementById('existingAccountInput').value;
+        const acc = currentEntityData.find(x => x.nombre.toLowerCase() === val.toLowerCase());
+        if(!acc) return;
+        selectedAccount = acc;
+        document.getElementById('nombre').value = acc.nombre;
+        document.getElementById('uenRelacionada').value = acc.uen;
+        document.getElementById('monedaRelacionada').value = acc.moneda;
+        document.getElementById('proyectoRelacionado').value = acc.proyecto;
+        
+        document.getElementById('accountSelectorWrapper').classList.add('hidden');
+        document.getElementById('dynamicFields').classList.remove('hidden');
+        document.getElementById('updateAlert').classList.remove('hidden');
+        document.getElementById('btnSubmit').textContent = 'Guardar Cambios';
+        document.getElementById('btnDelete').classList.remove('hidden');
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        document.getElementById('loader').classList.remove('hidden');
+        const payload = {
+            mode: currentMode,
+            entityType: document.getElementById('entityType').value,
+            nombre: document.getElementById('nombre').value,
+            uenRelacionada: document.getElementById('uenRelacionada').value,
+            monedaRelacionada: document.getElementById('monedaRelacionada').value,
+            proyectoRelacionado: document.getElementById('proyectoRelacionado').value,
+            rowIndex: selectedAccount ? selectedAccount.rowIndex : null
+        };
+        const func = currentMode === 'CREATE' ? 'saveAbmRecord' : 'updateAbmRecord';
+        google.script.run
+            .withSuccessHandler(res => {
+                const title = currentMode === 'CREATE' ? '¡Registro Creado!' : '¡Registro Modificado!';
+                document.getElementById('successTitle').textContent = title;
+                document.getElementById('successMessage').innerHTML = `El registro <b>${res.nombre}</b> fue procesado correctamente.`;
+                document.getElementById('successState').classList.remove('hidden');
+                document.getElementById('loader').classList.add('hidden');
+            })
+            .withFailureHandler(err => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('errorMessageText').textContent = err.message;
+                document.getElementById('errorAlert').classList.remove('hidden');
+            })[func](payload);
+    }
+
+    function handleDeleteClick() {
+        document.getElementById('updateAlert').classList.add('hidden');
+        document.getElementById('deleteAlert').classList.remove('hidden');
+        document.getElementById('btnSubmit').classList.add('hidden');
+        const bd = document.getElementById('btnDelete');
+        bd.textContent = 'Confirmar';
+        bd.onclick = () => {
+            document.getElementById('loader').classList.remove('hidden');
+            google.script.run.withSuccessHandler(() => {
+                document.getElementById('successTitle').textContent = '¡Registro Eliminado!';
+                document.getElementById('successMessage').innerHTML = 'El registro fue borrado permanentemente.';
+                document.getElementById('successState').classList.remove('hidden');
+                document.getElementById('loader').classList.add('hidden');
+            }).deleteAbmRecord({ entityType: document.getElementById('entityType').value, rowIndex: selectedAccount.rowIndex });
+        };
+    }
+
+    function resetFormForNew() {
+        const ent = document.getElementById('entityType').value;
+        document.getElementById('abmForm').reset();
+        document.getElementById('entityType').value = ent; // Preserve entity
+        hideAllAlerts();
+        document.getElementById('successState').classList.add('hidden');
+        handleEntityChange(); // Re-center and show modes
+    }
+
+    function hideAllAlerts() {
+        ['errorAlert', 'updateAlert', 'deleteAlert'].forEach(x => document.getElementById(x).classList.add('hidden'));
+    }
+</script>
+</body>
+</html>
