@@ -8,20 +8,20 @@ El siguiente modelo de red visual, construido con código *Mermaid*, ilustra el 
 
 ```mermaid
 graph TD
-    "REGISTROS - Movimientos" --> "PANEL"
-    "Plan de Cuentas" --> "PANEL"
-    "ANUAL - PRES." --> "PANEL"
-    "REGISTROS - Movimientos" --> "FlowCash"
-    "Plan de Cuentas" --> "FlowCash"
-    "ANUAL - PRES." --> "FlowCash"
-    "Plan de Cuentas" --> "ANUAL - PRES."
-    "REGISTROS - Movimientos" --> "ANUAL - REAL"
-    "Plan de Cuentas" --> "ANUAL - REAL"
-    "PANEL" --> "ANUAL - REAL"
-    "ANUAL - REAL" --> "REGISTROS - Movimientos"
-    "REGISTROS - Movimientos" --> "EXP_PREPAGA"
-    "ANUAL - PRES." --> "EXP_PREPAGA"
-    "Plan de Cuentas" --> "EXP_PREPAGA"
+    REGISTROSMovimientos["REGISTROS - Movimientos"] --> PANEL["PANEL"]
+    PlandeCuentas["Plan de Cuentas"] --> PANEL["PANEL"]
+    ANUALPRES["ANUAL - PRES."] --> PANEL["PANEL"]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] --> FlowCash["FlowCash"]
+    PlandeCuentas["Plan de Cuentas"] --> FlowCash["FlowCash"]
+    ANUALPRES["ANUAL - PRES."] --> FlowCash["FlowCash"]
+    PlandeCuentas["Plan de Cuentas"] --> ANUALPRES["ANUAL - PRES."]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] --> ANUALREAL["ANUAL - REAL"]
+    PlandeCuentas["Plan de Cuentas"] --> ANUALREAL["ANUAL - REAL"]
+    PANEL["PANEL"] --> ANUALREAL["ANUAL - REAL"]
+    ANUALREAL["ANUAL - REAL"] --> REGISTROSMovimientos["REGISTROS - Movimientos"]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] --> EXPPREPAGA["EXP_PREPAGA"]
+    ANUALPRES["ANUAL - PRES."] --> EXPPREPAGA["EXP_PREPAGA"]
+    PlandeCuentas["Plan de Cuentas"] --> EXPPREPAGA["EXP_PREPAGA"]
 ```
 
 ## 📄 Nodo de Sistema: `PANEL`
