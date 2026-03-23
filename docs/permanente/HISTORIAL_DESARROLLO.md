@@ -3,6 +3,19 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
+## 2026-03-23 - Fix de Nomenclatura en Script de Migración (v0.1.0-Iteracion01)
+
+### Evento
+Notificación automática: el modelo detectó la corrección manual de referencias obsoletas directamente en el backend.
+
+### Cambios Implementados
+- Renombramiento de string "Cuentas" a "Plan de Cuentas" en `src/migracion-UENS.js`.
+- Ajuste de sensibilidad a mayusculas de "REGISTROS" a "Registros".
+
+### Resultado
+- Prevención exitosa de error nulo alertado por `getUi().alert()` al ejecutar mapeos de migración vieja.
+
+---
 ## 2026-03-23 - Inicialización del sistema de control de versiones (v0.1.0)
 
 ### Evento

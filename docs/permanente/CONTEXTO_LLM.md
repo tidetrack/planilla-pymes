@@ -1,5 +1,9 @@
 # Contexto LLM - Mapeo de Base de Datos
 
+**🔗 URL Maestra de la Planilla Pymes (Producción):**
+[Google Sheets - Planilla Pymes](https://docs.google.com/spreadsheets/d/1E9ord020rPwk6qrvbqxLZV4QoA-tEq7M2af6tR5P8Wc/edit?usp=sharing)
+*(Guardado para referencias de estructura, mapeo de celdas y arquitectura).*
+
 Este documento define la estructura relacional de las hojas de cálculo del proyecto *Planilla Pymes*. Google Sheets actúa como la capa de persistencia (Base de Datos), mientras que Apps Script actúa como el Backend ORM.
 
 ## Plan_Cuentas_Pyme
