@@ -1,0 +1,16 @@
+{
+  "timeZone": "America/Argentina/Buenos_Aires",
+  "dependencies": {
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "sheets": {
+    "macros": [{
+      "menuName": "REGISTROCARGA",
+      "functionName": "REGISTROCARGA"
+    }, {
+      "menuName": "CARGA-REGISTROS",
+      "functionName": "myFunction"
+    }]
+  }
+}

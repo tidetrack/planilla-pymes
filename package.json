@@ -1,0 +1,15 @@
+{
+  "name": "planilla-pymes",
+  "version": "1.0.0",
+  "description": "Tidetrack Planilla Pymes Apps Script Project",
+  "main": "index.js",
+  "scripts": {
+    "sync": "clasp push -w",
+    "pull": "clasp pull",
+    "login": "clasp login"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.83"
+  }
+}
