@@ -40,7 +40,7 @@ graph TD
     PlandeCuentas -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA
 
     %% Estilización General de Enlaces
-    linkStyle default stroke:#4A6B8A,stroke-width:1px,color:#1C2833;
+    linkStyle default stroke:#4A6B8A,stroke-width:2px;
 ```
 
 ## 📄 Nodo de Sistema: `PANEL`
