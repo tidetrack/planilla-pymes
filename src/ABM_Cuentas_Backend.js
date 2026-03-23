@@ -26,10 +26,10 @@ function onOpen(e) {
 function abrirAbmPlanCuentas() {
   const html = HtmlService.createTemplateFromFile('UI_AbmPlanCuentas')
     .evaluate()
-    .setTitle('Gestión Plan de Cuentas')
+    .setTitle(' ')
     .setWidth(450)
-    .setHeight(650);
-  SpreadsheetApp.getUi().showModalDialog(html, 'Plan de Cuentas PYME');
+    .setHeight(800);
+  SpreadsheetApp.getUi().showModalDialog(html, '          ');
 }
 
 function mostrarLinkContrato() {

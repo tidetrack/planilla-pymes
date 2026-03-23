@@ -28,7 +28,7 @@ function exportarArquitecturaTotal() {
     hojas: {}
   };
 
-  ss.toast("Iniciando escaneo profundo 100%...", "DevTools", 3);
+  try { ss.toast("Iniciando escaneo profundo 100%...", "DevTools", 3); } catch(e){}
 
   hojas.forEach(hoja => {
     const nombre = hoja.getName();
@@ -92,10 +92,12 @@ function exportarArquitecturaTotal() {
 
   const archivo = DriveApp.getRootFolder().createFile(nombreArchivo, jsonStr, MimeType.PLAIN_TEXT);
   
-  SpreadsheetApp.getUi().alert(
-    "✅ Arquitectura exportada con éxito\n\n" +
-    "El archivo JSON se ha guardado en tu Google Drive raíz como:\n" + 
-    nombreArchivo + "\n\n" +
-    "Por favor, descarga ese archivo y colócalo en la carpeta docs/permanente/ del repositorio local para que la IA lo procese."
-  );
+  console.log("✅ Arquitectura exportada con éxito.");
+  console.log("URL de descarga directa: " + archivo.getUrl());
+  
+  try {
+    SpreadsheetApp.getUi().alert("✅ Arquitectura exportada. Revisa tu Drive.");
+  } catch(e) {
+    // Ignorar si no hay contexto UI (ej. si se corre desde el editor)
+  }
 }
