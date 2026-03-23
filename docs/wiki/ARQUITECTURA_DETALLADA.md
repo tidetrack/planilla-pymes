@@ -8,20 +8,20 @@ El siguiente modelo de red visual, construido con código *Mermaid*, ilustra el 
 
 ```mermaid
 graph TD
-    REGISTROSMovimientos["REGISTROS - Movimientos"] --> PANEL["PANEL"]
-    PlandeCuentas["Plan de Cuentas"] --> PANEL["PANEL"]
-    ANUALPRES["ANUAL - PRES."] --> PANEL["PANEL"]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] --> FlowCash["FlowCash"]
-    PlandeCuentas["Plan de Cuentas"] --> FlowCash["FlowCash"]
-    ANUALPRES["ANUAL - PRES."] --> FlowCash["FlowCash"]
-    PlandeCuentas["Plan de Cuentas"] --> ANUALPRES["ANUAL - PRES."]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] --> ANUALREAL["ANUAL - REAL"]
-    PlandeCuentas["Plan de Cuentas"] --> ANUALREAL["ANUAL - REAL"]
-    PANEL["PANEL"] --> ANUALREAL["ANUAL - REAL"]
-    ANUALREAL["ANUAL - REAL"] --> REGISTROSMovimientos["REGISTROS - Movimientos"]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] --> EXPPREPAGA["EXP_PREPAGA"]
-    ANUALPRES["ANUAL - PRES."] --> EXPPREPAGA["EXP_PREPAGA"]
-    PlandeCuentas["Plan de Cuentas"] --> EXPPREPAGA["EXP_PREPAGA"]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MES, REGISTROS MES ANTERIOR, REGISTROS MES SIN FILTROS"| PANEL["PANEL"]
+    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: Métricas Auxiliares, PANEL DE CUENTAS"| PANEL["PANEL"]
+    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: Métricas Auxiliares"| PANEL["PANEL"]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MES"| FlowCash["FlowCash"]
+    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: Métricas Auxiliares"| FlowCash["FlowCash"]
+    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: Métricas Auxiliares"| FlowCash["FlowCash"]
+    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: 1. Ingresos y Recursos, 2. Costo de Ventas, 3. Gastos..."| ANUALPRES["ANUAL - PRES."]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: MOVIMIENTOS"| ANUALREAL["ANUAL - REAL"]
+    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: 1. INGRESOS Y RECURSOS, 2. COSTOS DE VENTAS, 3. GASTOS..."| ANUALREAL["ANUAL - REAL"]
+    PANEL["PANEL"] -->|"Alimenta: Métricas Auxiliares"| ANUALREAL["ANUAL - REAL"]
+    ANUALREAL["ANUAL - REAL"] -->|"Alimenta: TIPO CAMBIO DÓLAR"| REGISTROSMovimientos["REGISTROS - Movimientos"]
+    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MPP"| EXPPREPAGA["EXP_PREPAGA"]
+    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA["EXP_PREPAGA"]
+    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA["EXP_PREPAGA"]
 ```
 
 ## 📄 Nodo de Sistema: `PANEL`
