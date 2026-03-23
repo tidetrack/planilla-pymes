@@ -1,6 +1,15 @@
 /**
- * ABM_Cuentas_Backend.js
- * Gestiona el CRUD completo de la hoja Plan de Cuentas.
+ * MÓDULO: ABM Cuentas Backend (Gestión de Catálogo Financiero)
+ * 
+ * [CONCEPTO DE NEGOCIO]
+ * Este módulo gestiona el catálogo principal que usa la Pyme para clasificar sus transacciones económicas. 
+ * Estandariza la entrada de datos para evitar desórdenes financieros y habilita el análisis automatizado de rentabilidad.
+ * 
+ * [FUNDAMENTO TEÓRICO / ADMINISTRATIVO]
+ * Respeta la disciplina transaccional: Clasifica todo en Ingresos, Costos, Gastos, Resultados y Medios de Pago. 
+ * Forza el uso de Unidades de Negocio (UEN) para permitir balances de gestión segmentados y análisis de centros de beneficio.
+ * 
+ * @see docs/permanente/notebookLM/TEMPLATE_FUNCIONALIDAD.md (Referencia Conceptual)
  */
 
 function onOpen(e) {
