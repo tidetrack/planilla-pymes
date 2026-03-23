@@ -3,9 +3,50 @@
 <head>
     <base target="_top">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <?!= include('UI_SharedStyles'); ?>
-
     <style>
+        :root {
+            --primary-color: #11252c;
+            --primary-dark: #1c3b46;
+            --text-secondary: #5f6368;
+            --success: #155724;
+            --success-bg: #d4edda;
+            --border-radius-md: 8px;
+        }
+
+        /* Base form elements */
+        body { font-family: 'Google Sans', sans-serif; }
+        .container { max-width: 400px; margin: 0 auto; padding: 20px; }
+        
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-danger { background-color: #dc3545; color: white; }
+        .btn-danger:hover { background-color: #c82333; }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px;
+            font-family: inherit;
+            border: 1px solid #d4dbe8;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #fff;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .form-input:disabled { background-color: #f8f9fa; }
+        .form-group { margin-bottom: 12px; }
+
         /* ── Base: color invertido ── */
         body {
             background-color: #FFFFFF !important;
