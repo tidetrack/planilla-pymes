@@ -4,24 +4,43 @@ Esta documentación hiper-detallada reconstruye la anatomía de la "Planilla Pym
 
 ## 🕸️ Topología del Sistema (Grafo de Dependencias)
 
-El siguiente modelo de red visual, construido con código *Mermaid*, ilustra el flujo transaccional. Las flechas indican de dónde extrae información una hoja para funcionar (Relaciones de Dependencia creadas por fórmulas profundas).
+El siguiente modelo de red visual, construido y estilizado con el **Design System Premium** de la empresa, ilustra el flujo transaccional. Las flechas indican de dónde extrae información una hoja para funcionar.
 
 ```mermaid
 graph TD
-    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MES, REGISTROS MES ANTERIOR, REGISTROS MES SIN FILTROS"| PANEL["PANEL"]
-    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: Métricas Auxiliares, PANEL DE CUENTAS"| PANEL["PANEL"]
-    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: Métricas Auxiliares"| PANEL["PANEL"]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MES"| FlowCash["FlowCash"]
-    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: Métricas Auxiliares"| FlowCash["FlowCash"]
-    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: Métricas Auxiliares"| FlowCash["FlowCash"]
-    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: 1. Ingresos y Recursos, 2. Costo de Ventas, 3. Gastos..."| ANUALPRES["ANUAL - PRES."]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: MOVIMIENTOS"| ANUALREAL["ANUAL - REAL"]
-    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: 1. INGRESOS Y RECURSOS, 2. COSTOS DE VENTAS, 3. GASTOS..."| ANUALREAL["ANUAL - REAL"]
-    PANEL["PANEL"] -->|"Alimenta: Métricas Auxiliares"| ANUALREAL["ANUAL - REAL"]
-    ANUALREAL["ANUAL - REAL"] -->|"Alimenta: TIPO CAMBIO DÓLAR"| REGISTROSMovimientos["REGISTROS - Movimientos"]
-    REGISTROSMovimientos["REGISTROS - Movimientos"] -->|"Alimenta: REGISTROS MPP"| EXPPREPAGA["EXP_PREPAGA"]
-    ANUALPRES["ANUAL - PRES."] -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA["EXP_PREPAGA"]
-    PlandeCuentas["Plan de Cuentas"] -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA["EXP_PREPAGA"]
+    %% -- UX PREMIUM DESIGN SYSTEM (Pymes) --
+    classDef core fill:#1C2833,color:#FFFFFF,stroke:#0F1A24,stroke-width:2px,rx:10px,ry:10px;
+    classDef db fill:#F0F4F8,color:#11252C,stroke:#A5D6A7,stroke-width:2px,rx:5px,ry:5px;
+    classDef oculta fill:#FFFFFF,color:#8C98A4,stroke:#D1D9E0,stroke-width:2px,stroke-dasharray: 4 4,rx:5px,ry:5px;
+    
+    PANEL["📊 PANEL"]:::core
+    FlowCash["📊 FlowCash"]:::core
+    CARGA["🗂️ CARGA"]:::db
+    ANUALPRES["🗂️ ANUAL - PRES."]:::db
+    ANUALREAL["🗂️ ANUAL - REAL"]:::db
+    PlandeCuentas["🗂️ Plan de Cuentas"]:::db
+    REGISTROSMovimientos["🗂️ REGISTROS - Movimientos"]:::db
+    GLOSARIOKPIS["🗂️ GLOSARIO KPIS"]:::db
+    EXPPREPAGA["⚙️ EXP_PREPAGA"]:::oculta
+
+    %% -- VINCULACIONES SEMÁNTICAS --
+    REGISTROSMovimientos -->|"Alimenta: REGISTROS MES, REGISTROS MES ANTERIOR, REGISTROS MES SIN FILTROS"| PANEL
+    PlandeCuentas -->|"Alimenta: Métricas, PANEL DE CUENTAS"| PANEL
+    ANUALPRES -->|"Alimenta: Métricas"| PANEL
+    REGISTROSMovimientos -->|"Alimenta: REGISTROS MES"| FlowCash
+    PlandeCuentas -->|"Alimenta: Métricas"| FlowCash
+    ANUALPRES -->|"Alimenta: Métricas"| FlowCash
+    PlandeCuentas -->|"Alimenta: 1. Ingresos y Recursos, 2. Costo de Ventas, 3. Gastos..."| ANUALPRES
+    REGISTROSMovimientos -->|"Alimenta: MOVIMIENTOS"| ANUALREAL
+    PlandeCuentas -->|"Alimenta: 1. INGRESOS Y RECURSOS, 2. COSTOS DE VENTAS, 3. GASTOS..."| ANUALREAL
+    PANEL -->|"Alimenta: Métricas"| ANUALREAL
+    ANUALREAL -->|"Alimenta: TIPO CAMBIO DÓLAR"| REGISTROSMovimientos
+    REGISTROSMovimientos -->|"Alimenta: REGISTROS MPP"| EXPPREPAGA
+    ANUALPRES -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA
+    PlandeCuentas -->|"Alimenta: ANUAL - PRES | INGRESOS Y RECURSOS MPP, ANUAL - PRES | COSTO DE VENTAS MPP, ANUAL - PRES | GASTOS MPP..."| EXPPREPAGA
+
+    %% Estilización General de Enlaces
+    linkStyle default stroke:#4A6B8A,stroke-width:1px,color:#1C2833;
 ```
 
 ## 📄 Nodo de Sistema: `PANEL`
@@ -31,42 +50,42 @@ graph TD
 
 #### Tarjeta: **[ CALENDARIO ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 14pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=SEQUENCE( 6,7,H1-WEEKDAY(H1,1)+1)`
 
 #### Tarjeta: **[ 46082 ]** (Columna H)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0 / #e6f4ea`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=DATEVALUE(B3&" 1 "&G3)`
 
 #### Tarjeta: **[ 3 ]** (Columna I)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=MONTH(H1)`
 
 #### Tarjeta: **[ PANEL DE CUENTAS  ]** (Columna K)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 14pt, 9pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=IFERROR(QUERY('Plan de Cuentas'!B3:D, "SELECT B WHERE B IS NOT NULL" & IF(F12="TODOS", "", " AND C = '"&F12&"'"), 0),"")`
 
 #### Tarjeta: **[ REGISTROS MES ]** (Columna AT)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=QUERY('REGISTROS - Movimientos'!A:I, "SELECT * WHERE A >= date '"&TEXT(H1,"yyyy-MM-dd")&"' AND A <= date '"&TEXT(EOMONTH(H1,0),"yyyy-MM-dd")&"'", 0)`
 
 #### Tarjeta: **[ REGISTROS MES ANTERIOR ]** (Columna BD)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=QUERY('REGISTROS - Movimientos'!A:I, "SELECT * WHERE A >= date '"&TEXT(EOMONTH(BC3,-1),"yyyy-MM-dd")&"' AND A <= date '"&TEXT(BC3,"yyyy-MM-dd")&"'", 0)`
 
 #### Tarjeta: **[ REGISTROS MES SIN FILTROS ]** (Columna BN)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=QUERY('REGISTROS - Movimientos'!A:I, "SELECT * WHERE A >= date '"&TEXT(H1,"yyyy-MM-dd")&"' AND A <= date '"&TEXT(EOMONTH(H1,0),"yyyy-MM-dd")&"'", 0)`
 
 #### Tarjeta: **[ CÁLCULOS AUXILIARES ]** (Columna BX)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0 / #f1f3f4`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=K6`
   - `=K7`
   - `=K8`
@@ -79,31 +98,31 @@ graph TD
 
 #### Tarjeta: **[ CALENDARIO ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 14pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=SEQUENCE( 6,7,H1-WEEKDAY(H1,1)+1)`
 
 #### Tarjeta: **[ 46082 ]** (Columna H)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=DATEVALUE(B3&" 1 "&G3)`
 
 #### Tarjeta: **[ 3 ]** (Columna I)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=MONTH(H1)`
 
 #### Tarjeta: **[ FLUJO DE FONDOS ]** (Columna K)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 14pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ REGISTROS MES ]** (Columna AQ)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=IF(F12="Todos", QUERY('REGISTROS - Movimientos'!A:I, "SELECT * WHERE A >= date '"&TEXT(H1,"yyyy-MM-dd")&"' AND A <= date '"&TEXT(EOMONTH(H1,0),"yyyy-MM-dd")&"'", 0), QUERY('REGISTROS - Movimientos'!A:I, "SELECT * WHERE E = '"&F12&"' AND A >= date '"&TEXT(H1,"yyyy-MM-dd")&"' AND A <= date '"&TEXT(EOMONTH(H1,0),"yyyy-MM-dd")&"'", 0))`
 
 #### Tarjeta: **[ CÁLCULOS AUXILIARES ]** (Columna BA)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0 / #e2ecf0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=K50`
 
 ## 📄 Nodo de Sistema: `CARGA`
@@ -113,7 +132,7 @@ graph TD
 
 #### Tarjeta: **[ CARGA - REGISTROS ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 ## 📄 Nodo de Sistema: `ANUAL - PRES.`
 > **Estado en la Red:** Capa de Interacción (VISIBLE). Opera sobre un grid de 750x90 y contiene 4 validaciones condicionales que guían la UX del operador.
@@ -122,15 +141,15 @@ graph TD
 
 #### Tarjeta: **[ PRESUPUESTO GENERAL ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 11pt, 10pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[   1. INGRESOS ]** (Columna Q)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 1. Ingresos y Recursos ]** (Columna R)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!B3`
   - `='Plan de Cuentas'!B4`
   - `='Plan de Cuentas'!B5`
@@ -138,11 +157,11 @@ graph TD
 
 #### Tarjeta: **[ 2. COSTOS DE VENTAS  ]** (Columna AF)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 2. Costo de Ventas ]** (Columna AG)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!F3`
   - `='Plan de Cuentas'!F4`
   - `='Plan de Cuentas'!F5`
@@ -150,11 +169,11 @@ graph TD
 
 #### Tarjeta: **[ 3. GASTOS  ]** (Columna AU)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 3. Gastos ]** (Columna AV)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!J3`
   - `='Plan de Cuentas'!J4`
   - `='Plan de Cuentas'!J5`
@@ -162,11 +181,11 @@ graph TD
 
 #### Tarjeta: **[ 4. CARGA FISCAL ]** (Columna BJ)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 4. Carga Fistal ]** (Columna BK)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!N3`
   - `='Plan de Cuentas'!N4`
   - `='Plan de Cuentas'!N5`
@@ -174,11 +193,11 @@ graph TD
 
 #### Tarjeta: **[ 6. RESULTADOS ]** (Columna BY)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 6. Resultados ]** (Columna BZ)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!T3`
   - `='Plan de Cuentas'!T4`
   - `='Plan de Cuentas'!T5`
@@ -191,15 +210,15 @@ graph TD
 
 #### Tarjeta: **[ E.R. REAL ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 11pt, 10pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 1.INGRESOS                    ]** (Columna Q)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 1. INGRESOS Y RECURSOS ]** (Columna R)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!B3`
   - `='Plan de Cuentas'!B4`
   - `='Plan de Cuentas'!B5`
@@ -207,11 +226,11 @@ graph TD
 
 #### Tarjeta: **[ 2.COSTOS DE VENTAS  ]** (Columna AF)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 2. COSTOS DE VENTAS ]** (Columna AG)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!F3`
   - `='Plan de Cuentas'!F4`
   - `='Plan de Cuentas'!F5`
@@ -219,11 +238,11 @@ graph TD
 
 #### Tarjeta: **[ 3.GASTOS  ]** (Columna AU)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 3. GASTOS ]** (Columna AV)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!J3`
   - `='Plan de Cuentas'!J4`
   - `='Plan de Cuentas'!J5`
@@ -231,11 +250,11 @@ graph TD
 
 #### Tarjeta: **[ 4.CARGA FISCAL ]** (Columna BJ)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 4. CARGA FISCAL ]** (Columna BK)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!N3`
   - `='Plan de Cuentas'!N4`
   - `='Plan de Cuentas'!N5`
@@ -243,11 +262,11 @@ graph TD
 
 #### Tarjeta: **[ 6.RESULTADOS ]** (Columna BY)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ 6. RESULTADOS ]** (Columna BZ)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `='Plan de Cuentas'!T3`
   - `='Plan de Cuentas'!T4`
   - `='Plan de Cuentas'!T5`
@@ -255,11 +274,11 @@ graph TD
 
 #### Tarjeta: **[ MOVIMIENTOS ]** (Columna CN)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ MOVIMIENTOS ]** (Columna CO)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=QUERY('REGISTROS - Movimientos'!A:I)`
 
 ## 📄 Nodo de Sistema: `Plan de Cuentas`
@@ -269,7 +288,7 @@ graph TD
 
 #### Tarjeta: **[ PLAN DE CUENTAS  ]** (Columna A)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 16pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 ## 📄 Nodo de Sistema: `REGISTROS - Movimientos`
 > **Estado en la Red:** Capa de Interacción (VISIBLE). Opera sobre un grid de 215x9 y contiene 0 validaciones condicionales que guían la UX del operador.
@@ -278,35 +297,35 @@ graph TD
 
 #### Tarjeta: **[ FECHA ]** (Columna A)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ INGRESO ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ EGRESO ]** (Columna C)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ DETALLE ]** (Columna D)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ MEDIO ]** (Columna E)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ UNIDAD DE NEGOCIO ]** (Columna F)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ MONEDA ]** (Columna G)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 #### Tarjeta: **[ TIPO CAMBIO DÓLAR ]** (Columna H)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=IF(A2="", "", IFERROR(VLOOKUP(TEXT(A2, "yyyy-mm-dd"), 'ANUAL - REAL'!$CY$3:$CZ, 2, TRUE), 1))`
   - `=IF(A3="", "", IFERROR(VLOOKUP(TEXT(A3, "yyyy-mm-dd"), 'ANUAL - REAL'!$CY$3:$CZ, 2, TRUE), 1))`
   - `=IF(A4="", "", IFERROR(VLOOKUP(TEXT(A4, "yyyy-mm-dd"), 'ANUAL - REAL'!$CY$3:$CZ, 2, TRUE), 1))`
@@ -314,7 +333,7 @@ graph TD
 
 #### Tarjeta: **[ OBSERVACIÓN ]** (Columna I)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40`. Tamaños de fuente operativos: 15pt, 11pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 ## 📄 Nodo de Sistema: `GLOSARIO KPIS`
 > **Estado en la Red:** Capa de Interacción (VISIBLE). Opera sobre un grid de 22x7 y contiene 0 validaciones condicionales que guían la UX del operador.
@@ -323,7 +342,7 @@ graph TD
 
 #### Tarjeta: **[ GLOSARIO DE INDICADORES ]** (Columna C)
 - **Capa UX (Estilizado):** Fondos detectados `#1a2f40 / #e0e0e0`. Tamaños de fuente operativos: 16pt, 10pt, 13pt.
-- **Reconstrucción de la Unidad:** Celda pasiva (Hardcoded o ingreso manual de datos).
+- **Reconstrucción Funcional:** Celda pasiva (Hardcoded).
 
 ## 📄 Nodo de Sistema: `EXP_PREPAGA`
 > **Estado en la Red:** Procesamiento Secundario (OCULTA). Opera sobre un grid de 3x65 y contiene 0 validaciones condicionales que guían la UX del operador.
@@ -332,7 +351,7 @@ graph TD
 
 #### Tarjeta: **[ REGISTROS MPP ]** (Columna B)
 - **Capa UX (Estilizado):** Fondos detectados `#11252c / #1a2f40`. Tamaños de fuente operativos: 15pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=QUERY({
    QUERY('REGISTROS - Movimientos'!A:I, "SELECT A, B, C, D, E, F, G, H WHERE F = 'UEN-Medicina Prepaga' AND NOT LOWER(F) CONTAINS 'sin movim'", 1);
    QUERY('REGISTROS - Movimientos'!A:I, "SELECT A, B, C/3, D, E, 'Gasto Prorrateado', G, H WHERE F = 'UEN-Estructura Compartida' AND NOT LOWER(F) CONTAINS 'sin movim' LABEL C/3 '', 'Gasto Prorrateado' ''", 0);
@@ -341,21 +360,21 @@ graph TD
 
 #### Tarjeta: **[ ANUAL - PRES | INGRESOS Y RECURSOS MPP ]** (Columna K)
 - **Capa UX (Estilizado):** Fondos detectados `#11252c / #e0e0e0`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=FILTER(HSTACK('ANUAL - PRES.'!R4:R, 'ANUAL - PRES.'!S4:AD), ('ANUAL - PRES.'!R4:R <> "") * (IFERROR(VLOOKUP('ANUAL - PRES.'!R4:R, 'Plan de Cuentas'!B:C, 2, FALSE), "")="UEN-Medicina Prepaga") > 0)`
 
 #### Tarjeta: **[ ANUAL - PRES | COSTO DE VENTAS MPP ]** (Columna Y)
 - **Capa UX (Estilizado):** Fondos detectados `#11252c / #e0e0e0`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=FILTER(HSTACK('ANUAL - PRES.'!AG4:AG, 'ANUAL - PRES.'!AH4:AS / IF(IFERROR(VLOOKUP('ANUAL - PRES.'!AG4:AG, 'Plan de Cuentas'!F:G, 2, FALSE), "")="UEN-Estructura Compartida", 3, IF(IFERROR(VLOOKUP('ANUAL - PRES.'!AG4:AG, 'Plan de Cuentas'!F:G, 2, FALSE), "")="UEN-MPP + Pat", 2, 1))), ('ANUAL - PRES.'!AG4:AG <> "") * ((IFERROR(VLOOKUP('ANUAL - PRES.'!AG4:AG, 'Plan de Cuentas'!F:G, 2, FALSE), "")="UEN-Medicina Prepaga") + (IFERROR(VLOOKUP('ANUAL - PRES.'!AG4:AG, 'Plan de Cuentas'!F:G, 2, FALSE), "")="UEN-Estructura Compartida") + (IFERROR(VLOOKUP('ANUAL - PRES.'!AG4:AG, 'Plan de Cuentas'!F:G, 2, FALSE), "")="UEN-MPP + Pat")) > 0)`
 
 #### Tarjeta: **[ ANUAL - PRES | GASTOS MPP ]** (Columna AM)
 - **Capa UX (Estilizado):** Fondos detectados `#11252c / #e0e0e0`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=FILTER(HSTACK('ANUAL - PRES.'!AV4:AV, 'ANUAL - PRES.'!AW4:BH / IF(IFERROR(VLOOKUP('ANUAL - PRES.'!AV4:AV, 'Plan de Cuentas'!J:K, 2, FALSE), "")="UEN-Estructura Compartida", 3, IF(IFERROR(VLOOKUP('ANUAL - PRES.'!AV4:AV, 'Plan de Cuentas'!J:K, 2, FALSE), "")="UEN-MPP + Pat", 2, 1))), ('ANUAL - PRES.'!AV4:AV <> "") * ((IFERROR(VLOOKUP('ANUAL - PRES.'!AV4:AV, 'Plan de Cuentas'!J:K, 2, FALSE), "")="UEN-Medicina Prepaga") + (IFERROR(VLOOKUP('ANUAL - PRES.'!AV4:AV, 'Plan de Cuentas'!J:K, 2, FALSE), "")="UEN-Estructura Compartida") + (IFERROR(VLOOKUP('ANUAL - PRES.'!AV4:AV, 'Plan de Cuentas'!J:K, 2, FALSE), "")="UEN-MPP + Pat")) > 0)`
 
 #### Tarjeta: **[ ANUAL - PRES | CARGA FISCAL MPP ]** (Columna BA)
 - **Capa UX (Estilizado):** Fondos detectados `#11252c / #e0e0e0`. Tamaños de fuente operativos: 10pt.
-- **Reconstrucción de la Unidad (Fórmulas Atómicas):**
+- **Reconstrucción Funcional:**
   - `=FILTER(HSTACK('ANUAL - PRES.'!BK4:BK, 'ANUAL - PRES.'!BL4:BW / IF(IFERROR(VLOOKUP('ANUAL - PRES.'!BK4:BK, 'Plan de Cuentas'!N:O, 2, FALSE), "")="UEN-Estructura Compartida", 3, IF(IFERROR(VLOOKUP('ANUAL - PRES.'!BK4:BK, 'Plan de Cuentas'!N:O, 2, FALSE), "")="UEN-MPP + Pat", 2, 1))), ('ANUAL - PRES.'!BK4:BK <> "") * ((IFERROR(VLOOKUP('ANUAL - PRES.'!BK4:BK, 'Plan de Cuentas'!N:O, 2, FALSE), "")="UEN-Medicina Prepaga") + (IFERROR(VLOOKUP('ANUAL - PRES.'!BK4:BK, 'Plan de Cuentas'!N:O, 2, FALSE), "")="UEN-Estructura Compartida") + (IFERROR(VLOOKUP('ANUAL - PRES.'!BK4:BK, 'Plan de Cuentas'!N:O, 2, FALSE), "")="UEN-MPP + Pat")) > 0)`
 
