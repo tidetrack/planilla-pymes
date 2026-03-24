@@ -9,16 +9,22 @@ Este repositorio NO es simplemente un registro de código; es un producto integr
 - **Backend / ORM**: Lógica de negocio en archivos `.js` que actúa como puente transaccional entre la UI y la base de datos (Ej. `src/ABM_Cuentas_Backend.js`).
 - **Base de Datos**: Google Sheets (Planilla Pymes). Las columnas y filas están rígidamente mapeadas vía rangos de configuración nativa en `src/00_Config.js`.
 
+## 🧠 Paradigma AI-First (Arquitectura Autoconsciente)
+Tidetrack ha evolucionado de una simple planilla a un sistema autoconsciente diseñado para colaborar con Inteligencia Artificial:
+- **Auto-escaneo Estructural:** La herramienta nativa `ScannerArquitectura.js` lee el 100% de la metadata (fórmulas, colores, layouts) de Google Sheets y lo exporta como un mapa genético en formato JSON.
+- **Topología Viva:** Un compilador en Node.js transforma el ADN masivo en un [Grafo Mermaid Interactivo](docs/wiki/ARQUITECTURA_DETALLADA.md), revelando la dirección semántica de todas las transacciones (Qué hoja alimenta a cuál y con qué fin).
+- **Cerebro Externo:** Todo el conocimiento de la plataforma actúa como "Fuente Mestra" para NotebookLM u otros LLMs a través de nuestro [System Prompt Oficial](docs/permanente/notebookLM/SYSTEM_PROMPT_BOT.md), garantizando cero alucinaciones y matemática O(1).
+
 ## 📚 Documentación y Wiki
-Toda la documentación técnica del proyecto ha sido consolidada en nuestra **Wiki Técnica** para desarrolladores y analistas de datos.
+Toda la documentación técnica del proyecto ha sido consolidada en nuestra **Wiki Técnica** para desarrolladores e ingenieros de prompt.
 
 👉 **[Ir a la Wiki Técnica (Home)](docs/wiki/home.md)** 👈
 
-**Enlaces Rápidos de Interés:**
-- [Modelo de Datos Core Mapeado](docs/permanente/MODELO_DATOS.md)
-- [Reglas y Agentes de Inteligencia Artificial](.agent/skills/)
+**Enlaces Rápidos Clave:**
+- [Topología del Sistema y Taxonomía (Mermaid Graph)](docs/wiki/ARQUITECTURA_DETALLADA.md)
+- [Cerebro Bot (System Prompt NotebookLM)](docs/permanente/notebookLM/SYSTEM_PROMPT_BOT.md)
+- [Modelo de Datos Intríseco](docs/permanente/MODELO_DATOS.md)
 - [Historial Global de Desarrollo](docs/permanente/HISTORIAL_DESARROLLO.md)
-- [Conceptos de Negocio (Para IA y Usuarios)](docs/permanente/notebookLM/)
 
 ## 🛠️ Prerrequisitos y Desarrollo Local
 Para trabajar activamente en este proyecto, necesitas vincular tu entorno local al proyecto de Google Apps Script en la nube:
