@@ -4,13 +4,6 @@
  * y escribirlos en la hoja 'Registros de Movimientos' triangulando dimensiones.
  */
 
-function onOpen() {
-  const ui = SpreadsheetApp.getUi();
-  ui.createMenu('🛠️ Tidetrack Developer')
-    .addItem('Procesar Lote de Carga', 'procesarLoteCargas')
-    .addToUi();
-}
-
 function procesarLoteCargas() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheetCargas = ss.getSheetByName(CONFIG.HOJAS.CARGAS);

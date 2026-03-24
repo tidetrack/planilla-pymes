@@ -17,6 +17,8 @@ function onOpen(e) {
     .createMenu('Finanzas Tidetrack')
     .addItem('Gestionar Plan de Cuentas', 'abrirAbmPlanCuentas')
     .addSeparator()
+    .addItem('🛠️ Procesar Lote de Carga', 'procesarLoteCargas')
+    .addSeparator()
     .addItem('Actualizar UEN de Registros', 'actualizarUENRegistros')
     .addSeparator()
     .addItem('Contrato Tidetrack', 'mostrarLinkContrato')
