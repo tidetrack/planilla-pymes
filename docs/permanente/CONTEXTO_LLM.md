@@ -36,4 +36,5 @@ Este documento define la estructura relacional de las hojas de cálculo del proy
 - **AC**: Medios de Pago - Proyecto Asociado
 - **AD**: Medios de Pago - UEN Asociada
 - **AF**: Proyectos Disponibles
-- **AH**: Unidades de Negocio (UEN)
+- **AG**: Proyectos - UEN Asociada
+- **AI**: Unidades de Negocio (UEN Maestro)

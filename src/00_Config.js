@@ -6,7 +6,10 @@
 
 const CONFIG = {
   HOJAS: {
-    PLAN_CUENTAS: "Plan de Cuentas"
+    PLAN_CUENTAS: "Plan de Cuentas",
+    CARGAS: "Cargas",
+    REGISTROS: "Registros de Movimientos",
+    TIPO_CAMBIO: "Tipo de Cambio"
   },
   PLAN_CUENTAS: {
     INICIO_FILA_DATOS: 3,
@@ -21,7 +24,11 @@ const CONFIG = {
     RANGOS_GLOBALES: {
       MOVIMIENTOS: "V",
       PROYECTOS: "AF",
-      UEN: "AH"
+      PROYECTOS_UEN: "AG",
+      UEN_MASTER: "AI"
     }
+  },
+  RANGOS: {
+    CARGAS_MODULO: "C4:H23"
   }
 };
