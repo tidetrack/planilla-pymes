@@ -1,20 +1,14 @@
 // --- CONFIGURACIÓN GLOBAL ---
 const HOJA_CUENTAS_NAME = "Plan de Cuentas";
 const HOJA_PANEL_NAME = "PANEL";
-const HOJA_CARGA_NAME = "CARGA";
+const HOJA_CARGA_NAME = "Cargas";
 
 // =================================================================
-// MAPA DE COLUMNAS DE LA HOJA "CARGA"
-// A=1, B=2, C=3, D=4, E=5, F=6, G=7, H=8, I=9, J=10
+// MAPA DE COLUMNAS DE LA HOJA "CARGAS"
+// A=1, B=2, C=3 (Monto), G=7 (Fecha)
 // =================================================================
-const COL_FECHA_OUT      = 2; // (B) Dónde se escribe la fecha
-const COL_INGRESO_IN     = 3; // (C) Trigger para poner fecha
-const COL_EGRESO_IN      = 4; // (D) Trigger para poner fecha
-const COL_DETALLE_IN     = 5; // (E) TRIGGER PARA BUSCAR PROYECTO
-const COL_MEDIO_IN       = 6; // (F) TRIGGER PARA BUSCAR MONEDA Y TC
-const COL_PROYECTO_OUT   = 7; // (G) Dónde se escribe el Proyecto (antes UEN)
-const COL_MONEDA_OUT     = 8; // (H) Dónde se escribe la Moneda
-const COL_TC_OUT         = 9; // (I) Dónde se escribe el Tipo de Cambio Dólar
+const COL_MONTO_IN       = 3; // (C) Trigger para poner fecha
+const COL_FECHA_OUT      = 7; // (G) Dónde se escribe la fecha
 
 // Configuraciones para Lógica D (Checkboxes en Panel)
 const COL_STORAGE_NOMBRES = 96; // Columna CR
@@ -37,74 +31,16 @@ function onEdit(e) {
   const row = range.getRow();
 
   // =================================================================
-  // BLOQUE 1: LÓGICA EXCLUSIVA DE HOJA "CARGA"
+  // BLOQUE 1: LÓGICA EXCLUSIVA DE HOJA "CARGAS"
   // =================================================================
-  if (sheetName === HOJA_CARGA_NAME && row > 3) {
-    
-    // LÓGICA NUEVA: Si se edita la FECHA manualmente, recalcula el TC
-    if (col === COL_FECHA_OUT) {
-      const medio = sheet.getRange(row, COL_MEDIO_IN).getValue();
-      if (medio !== "") {
-        let fechaTx = range.getValue();
-        if (!fechaTx || isNaN(new Date(fechaTx).getTime())) {
-           fechaTx = new Date(); // Seguro anticaídas
-        }
-        const cellTC = sheet.getRange(row, COL_TC_OUT);
-        const tcHistorico = obtenerCotizacionHistorica(ss, fechaTx);
-        cellTC.setValue(tcHistorico);
-      }
-      return; 
-    }
-
-    // LÓGICA A: Fecha Automática 
-    if (col === COL_INGRESO_IN || col === COL_EGRESO_IN) {
+  if (sheetName === HOJA_CARGA_NAME && row >= 4 && row <= 23) {
+    if (col === COL_MONTO_IN) {
       const cellFecha = sheet.getRange(row, COL_FECHA_OUT); 
-      if (cellFecha.getValue() === "") {
+      // Si insertó un número en Monto y la Fecha estaba vacía
+      if (cellFecha.getValue() === "" && range.getValue() !== "") {
         cellFecha.setValue(new Date());
       }
       return; 
-    }
-
-    // LÓGICA C: Auto-completar Proyecto basada en el DETALLE (Col E)
-    if (col === COL_DETALLE_IN) {
-      const nombreCuenta = range.getValue();
-      const cellProyecto = sheet.getRange(row, COL_PROYECTO_OUT);
-      
-      if (nombreCuenta === "") {
-        cellProyecto.setValue(""); 
-      } else {
-        const proyectoEncontrado = buscarProyecto(ss, nombreCuenta);
-        cellProyecto.setValue(proyectoEncontrado || ""); 
-      }
-      return; 
-    }
-
-    // LÓGICA D: Auto-completar Moneda y TC Histórico basada en el MEDIO (Col F)
-    if (col === COL_MEDIO_IN) {
-      const medio = range.getValue();
-      const cellMoneda = sheet.getRange(row, COL_MONEDA_OUT); 
-      const cellTC = sheet.getRange(row, COL_TC_OUT);     
-
-      if (medio === "") {
-        cellMoneda.setValue("");
-        cellTC.setValue("");
-      } else {
-        const datosMedio = buscarMonedaYTC(ss, medio);
-        if (datosMedio) {
-          cellMoneda.setValue(datosMedio.moneda);
-        } else {
-          cellMoneda.setValue("");
-        }
-        
-        let fechaTx = sheet.getRange(row, COL_FECHA_OUT).getValue();
-        if (!fechaTx || isNaN(new Date(fechaTx).getTime())) {
-           fechaTx = new Date();
-        }
-        
-        const tcHistorico = obtenerCotizacionHistorica(ss, fechaTx);
-        cellTC.setValue(tcHistorico);
-      }
-      return;
     }
   }
 

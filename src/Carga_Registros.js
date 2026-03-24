@@ -11,8 +11,14 @@ function procesarLoteCargas() {
   const sheetPlanCuentas = ss.getSheetByName(CONFIG.HOJAS.PLAN_CUENTAS);
   const sheetTipoCambio = ss.getSheetByName(CONFIG.HOJAS.TIPO_CAMBIO);
 
-  if (!sheetCargas || !sheetRegistros || !sheetPlanCuentas || !sheetTipoCambio) {
-    SpreadsheetApp.getUi().alert("Error: No se encontraron todas las hojas necesarias.");
+  let faltantes = [];
+  if (!sheetCargas) faltantes.push(CONFIG.HOJAS.CARGAS);
+  if (!sheetRegistros) faltantes.push(CONFIG.HOJAS.REGISTROS);
+  if (!sheetPlanCuentas) faltantes.push(CONFIG.HOJAS.PLAN_CUENTAS);
+  if (!sheetTipoCambio) faltantes.push(CONFIG.HOJAS.TIPO_CAMBIO);
+
+  if (faltantes.length > 0) {
+    SpreadsheetApp.getUi().alert("Error: No se encontraron estas hojas exactas: " + faltantes.join(", "));
     return;
   }
 
