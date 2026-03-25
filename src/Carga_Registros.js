@@ -64,9 +64,9 @@ function procesarLoteCargas() {
     }
   }
 
-  // D. Mapa de Fecha a Cotización Venta (Hoja Tipo de Cambio, C4:D)
+  // D. Mapa de Fecha a Cotización Venta y Compra (Hoja Tipo de Cambio, C4:E)
   const mapCotizaciones = {};
-  const datosFX = sheetTipoCambio.getRange("C4:D").getValues();
+  const datosFX = sheetTipoCambio.getRange("C4:E").getValues();
   for (let r = 0; r < datosFX.length; r++) {
     if (datosFX[r][0]) {
       let fechaStr = "";
@@ -75,7 +75,10 @@ function procesarLoteCargas() {
       } else {
         fechaStr = datosFX[r][0].toString().trim();
       }
-      mapCotizaciones[fechaStr] = datosFX[r][1];
+      mapCotizaciones[fechaStr] = {
+        venta: datosFX[r][1],
+        compra: datosFX[r][2]
+      };
     }
   }
 
@@ -103,10 +106,12 @@ function procesarLoteCargas() {
     } else {
       fechaFX = fecha.toString().trim();
     }
-    const cotizacionDolar = mapCotizaciones[fechaFX] || 1; // 1 si no encuentra cotización
+    const cotizacionObj = mapCotizaciones[fechaFX] || { venta: 1, compra: 1 };
+    const cotizacionDolar = cotizacionObj.venta || 1;         // K
+    const cotizacionDolarCompra = cotizacionObj.compra || 1;  // L
 
-    // Armar fila para "Registros" (Orden B a K)
-    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), Cotización(K)]
+    // Armar fila para "Registros" (Orden B a L)
+    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L)]
     nuevasFilas.push([
       fechaObj, 
       monto, 
@@ -117,7 +122,8 @@ function procesarLoteCargas() {
       medioTrim, 
       moneda, 
       nota, 
-      cotizacionDolar
+      cotizacionDolar,
+      cotizacionDolarCompra
     ]);
   }
 
@@ -136,7 +142,7 @@ function procesarLoteCargas() {
   // 4. Escribir en 'Registros' (Fila 4 hacia abajo, debajo de los encabezados)
   const insertStartRow = 4;
   sheetRegistros.insertRowsBefore(insertStartRow, nuevasFilas.length);
-  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 10).setValues(nuevasFilas);
+  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 11).setValues(nuevasFilas);
 
   // Copiar formato desde la fila "6" antigua (ahora desplazada) para no heredar el fondo del encabezado
   // O en su defecto, forzar un formato limpio:
@@ -148,7 +154,7 @@ function procesarLoteCargas() {
   // Ordenamos si existen datos previos
   const numRowsTotal = sheetRegistros.getLastRow() - insertStartRow + 1;
   if (numRowsTotal > 0) {
-    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 10);
+    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 11);
     fullRange.sort({column: 2, ascending: false});
   }
 
