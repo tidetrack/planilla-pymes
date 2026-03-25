@@ -3,6 +3,24 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
+## 2026-03-25 - Sprint 3: Motor CxP/CxC — Registros - Compromisos (v1.3.0)
+
+### Evento
+Se implementó el módulo completo de Cuentas por Cobrar y Pagar con una BD propia (`Registros - Compromisos`) y un módulo de carga dedicado dentro de la hoja `Cargas`.
+
+### Cambios Implementados
+- Nueva hoja `Registros - Compromisos` (16 columnas B-Q, auto-gestionada por backend).
+- `03_Backend_Devengado.js` creado: genera ID correlativo (`CXC/CXP-YYYYMMDD-NNN`), infiere Proyecto/UEN, obtiene cotización USD live, escribe fórmulas nativas de Sheets para Saldo, Estado y Fecha Último Pago.
+- Hoja Cargas ampliada: Módulo B en `K4:Q23` para compromisos devengados.
+- `Carga_Registros.js` extendido a `C4:I23` (col I = ID_CXC opcional para imputar pagos).
+- Nuevo ítem de menú: `🛠️ Procesar Lote Devengado (CxP/CxC)`.
+- `00_Config.js` actualizado con `COMPROMISOS`, `CARGAS_MODULO` y `CARGAS_DEVENGADO`.
+- `MODELO_DATOS.md` actualizado con Clientes, Proveedores y Registros - Compromisos.
+
+### Resultado
+- El ciclo de vida de un compromiso (apertura → imputaciones parciales → cancelación) queda 100% automatizado via fórmulas SUMIF/MAXIFS nativas de Sheets.
+
+---
 ## 2026-03-25 - Sprint 1b: Clientes, Proveedores y Fix FX (v1.2.0)
 
 ### Evento

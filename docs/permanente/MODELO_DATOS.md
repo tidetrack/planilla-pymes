@@ -56,5 +56,42 @@ Ubicación: `AF2:AF` (Fila 2 encabezados)
 Ubicación: `AH2:AH` (Fila 2 encabezados)
 - Recopila las distintas Unidades de Negocio (UEN) de la empresa.
 
+### 10. Clientes
+Ubicación: `AF2:AH` (Fila 2 encabezados)
+- **Columna AF**: Nombre del Cliente (Razón Social)
+- **Columna AG**: CUIT / CUIL
+- **Columna AH**: Proyecto Asociado
+
+### 11. Proveedores
+Ubicación: `AJ2:AL` (Fila 2 encabezados)
+- **Columna AJ**: Nombre del Proveedor (Razón Social)
+- **Columna AK**: CUIT / CUIL
+- **Columna AL**: Proyecto Asociado
+
+---
+
+## Hoja de BD | Registros - Compromisos
+
+Libro de compromisos devengados (CxP y CxC). Alimentada automáticamente desde el Módulo B de la hoja **Cargas** (`K4:Q23`).
+
+| Col | Campo | Tipo / Origen |
+|---|---|---|
+| B | ID | Auto-generado: `CXC-YYYYMMDD-NNN` / `CXP-YYYYMMDD-NNN` |
+| C | Fecha Registro | Auto (fecha de procesamiento) |
+| D | Fecha Compromiso | Manual (col P de Cargas) |
+| E | Monto Comprometido | Manual (col K de Cargas) |
+| F | Total Imputado | Fórmula: `SUMIF` sobre `Registros col M` |
+| G | Saldo | Fórmula: `E - F` |
+| H | Fecha Último Pago | Fórmula: `MAXIFS` sobre `Registros` por ID |
+| I | Estado | Fórmula: `Pendiente / Parcial / Cancelado` |
+| J | Tipo | `Por Cobrar` / `Por Pagar` (col L de Cargas) |
+| K | Cliente / Proveedor | Glosario (col M de Cargas) |
+| L | Cuenta | Plan de Cuentas (col N de Cargas) |
+| M | Proyecto Asociado | Auto-inferido desde la Cuenta |
+| N | UEN Asociada | Auto-inferida desde el Proyecto |
+| O | Cotización USD Venta | Auto (API live al procesar) |
+| P | Cotización USD Compra | Auto (API live al procesar) |
+| Q | Nota | Libre (col Q de Cargas) |
+
 ---
 > **Nota de Arquitectura**: Registrar todo lo que ocurre basándose en este Plan de Cuentas es la regla única para permitir distintas visiones, análisis e interpretaciones (Flujos de fondos).

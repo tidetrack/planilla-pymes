@@ -22,8 +22,8 @@ function procesarLoteCargas() {
     return;
   }
 
-  // 1. Leer rango de Cargas C4:H23
-  // [Monto, Tipo, Cuenta, Medio, Fecha, Nota]
+  // 1. Leer rango de Cargas C4:I23
+  // [Monto, Tipo, Cuenta, Medio, Fecha, Nota, ID_CXC]
   const rangoCargas = sheetCargas.getRange(CONFIG.RANGOS.CARGAS_MODULO);
   const datosCargas = rangoCargas.getValues();
 
@@ -90,7 +90,7 @@ function procesarLoteCargas() {
   const nuevasFilas = [];
   
   for (let i = 0; i < datosCargas.length; i++) {
-    const [monto, tipo, cuenta, medio, fecha, nota] = datosCargas[i];
+    const [monto, tipo, cuenta, medio, fecha, nota, idCxc] = datosCargas[i];
     
     // Si la fila está vacía (sin monto o sin fecha), la saltamos
     if (!monto || monto === "" || !fecha || fecha === "") continue;
@@ -162,20 +162,21 @@ function procesarLoteCargas() {
       }
     }
 
-    // Armar fila para "Registros" (Orden B a L)
-    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L)]
+    // Armar fila para "Registros" (Orden B a M)
+    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L), ID_CXC(M)]
     nuevasFilas.push([
-      fechaObj, 
-      monto, 
-      tipo, 
-      cuentaTrim, 
-      proyectoAsociado, 
-      unidadAsociada, 
-      medioTrim, 
-      moneda, 
-      nota, 
+      fechaObj,
+      monto,
+      tipo,
+      cuentaTrim,
+      proyectoAsociado,
+      unidadAsociada,
+      medioTrim,
+      moneda,
+      nota,
       cotizacionDolar,
-      cotizacionDolarCompra
+      cotizacionDolarCompra,
+      idCxc ? idCxc.toString().trim() : ""  // M: ID_CXC para imputar contra devengado
     ]);
   }
 

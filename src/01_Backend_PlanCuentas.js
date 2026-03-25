@@ -18,6 +18,7 @@ function onOpen(e) {
     .addItem('Gestionar Plan de Cuentas', 'abrirAbmPlanCuentas')
     .addSeparator()
     .addItem('🛠️ Procesar Lote de Carga', 'procesarLoteCargas')
+    .addItem('🛠️ Procesar Lote Devengado (CxP/CxC)', 'procesarLoteDevengado')
     .addItem('🛠️ Forzar Carga Histórica USD (Desde 2026)', 'forzarCargaHistoricaUSD')
     .addSeparator()
     .addItem('Contrato Tidetrack', 'mostrarLinkContrato')

@@ -1,4 +1,12 @@
 /**
+ * [2026-03-25] v1.3.0 - Sprint 3 (Motor CxP/CxC - Registros Compromisos):
+ * - Nueva hoja "Registros - Compromisos" con 16 columnas auto-gestionadas.
+ * - 03_Backend_Devengado.js: ID correlativo, FX live, inferencia Proyecto/UEN, fórmulas nativas.
+ * - Módulo B en Cargas (K4:Q23) para compromisos devengados.
+ * - Carga_Registros extendido a C4:I23 (+col I ID_CXC para imputación).
+ * - Nuevo ítem de menú: Procesar Lote Devengado (CxP/CxC).
+ *
+ * ---
  * [2026-03-25] v1.2.0 - Sprint 1b (Clientes, Proveedores y Fix FX):
  * - Nuevos bloques CLIENTES (AF:AH) y PROVEEDORES (AJ:AL) en 00_Config.js y Plan de Cuentas.
  * - CRUD extendido en 01_Backend_PlanCuentas.js para los nuevos tipos (Nombre, CUIT/CUIL, Proyecto).

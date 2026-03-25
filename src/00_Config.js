@@ -9,7 +9,8 @@ const CONFIG = {
     PLAN_CUENTAS: "Plan de Cuentas",
     CARGAS: "Cargas",
     REGISTROS: "Registros",
-    TIPO_CAMBIO: "Tipo de Cambio"
+    TIPO_CAMBIO: "Tipo de Cambio",
+    COMPROMISOS: "Registros - Compromisos"
   },
   PLAN_CUENTAS: {
     INICIO_FILA_DATOS: 3,
@@ -34,6 +35,7 @@ const CONFIG = {
     }
   },
   RANGOS: {
-    CARGAS_MODULO: "C4:H23"
+    CARGAS_MODULO:    "C4:I23",  // Módulo A: Flujo (+col I ID_CXC)
+    CARGAS_DEVENGADO: "K4:Q23"   // Módulo B: Compromisos CxP/CxC
   }
 };
