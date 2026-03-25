@@ -8,7 +8,7 @@ const CONFIG = {
   HOJAS: {
     PLAN_CUENTAS: "Plan de Cuentas",
     CARGAS: "Cargas",
-    REGISTROS: "Registros",
+    REGISTROS: "Registros - Movimientos",
     TIPO_CAMBIO: "Tipo de Cambio",
     COMPROMISOS: "Registros - Compromisos"
   },

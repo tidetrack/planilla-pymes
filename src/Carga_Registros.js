@@ -192,10 +192,10 @@ function procesarLoteCargas() {
     return timeB - timeA;
   });
 
-  // 4. Escribir en 'Registros' (Fila 4 hacia abajo, debajo de los encabezados)
+  // 4. Escribir en 'Registros - Movimientos' (Fila 4 hacia abajo, debajo de los encabezados)
   const insertStartRow = 4;
   sheetRegistros.insertRowsBefore(insertStartRow, nuevasFilas.length);
-  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 11).setValues(nuevasFilas);
+  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 12).setValues(nuevasFilas);
 
   // Copiar formato desde la fila de datos inmediatamente inferior (la antigua fila 4 desplazada)
   // para heredar correctamente formatos de moneda, fechas y colores sin arrastrar el fondo del encabezado.
@@ -206,7 +206,7 @@ function procesarLoteCargas() {
   // Ordenamos si existen datos previos
   const numRowsTotal = sheetRegistros.getLastRow() - insertStartRow + 1;
   if (numRowsTotal > 0) {
-    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 11);
+    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 12);
     fullRange.sort({column: 2, ascending: false});
   }
 

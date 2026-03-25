@@ -142,10 +142,10 @@ function procesarLoteDevengado() {
   for (let r = 0; r < nuevasFilas.length; r++) {
     const fila = insertRow + r;
     const idRef = `B${fila}`;
-    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMIF(Registros!M:M,${idRef},Registros!C:C)`);           // F: Total Imputado
+    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMAR.SI('Registros - Movimientos'!M:M,${idRef},'Registros - Movimientos'!C:C)`);           // F: Total Imputado
     sheetCompromisos.getRange(fila, 7).setFormula(`=E${fila}-F${fila}`);                                      // G: Saldo
-    sheetCompromisos.getRange(fila, 8).setFormula(`=IFERROR(MAXIFS(Registros!G:G,Registros!M:M,${idRef}),"")`); // H: Fecha Último Pago
-    sheetCompromisos.getRange(fila, 9).setFormula(`=IF(G${fila}<=0,"Cancelado",IF(F${fila}>0,"Parcial","Pendiente"))`); // I: Estado
+    sheetCompromisos.getRange(fila, 8).setFormula(`=SI.ERROR(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef}),"")`); // H: Fecha Último Pago
+    sheetCompromisos.getRange(fila, 9).setFormula(`=SI(G${fila}<=0,"Cancelado",SI(F${fila}>0,"Parcial","Pendiente"))`); // I: Estado
   }
 
   // 8. Limpiar el módulo B en Cargas
