@@ -20,8 +20,6 @@ function onOpen(e) {
     .addItem('🛠️ Procesar Lote de Carga', 'procesarLoteCargas')
     .addItem('🛠️ Forzar Carga Histórica USD (Desde 2026)', 'forzarCargaHistoricaUSD')
     .addSeparator()
-    .addItem('Actualizar UEN de Registros', 'actualizarUENRegistros')
-    .addSeparator()
     .addItem('Contrato Tidetrack', 'mostrarLinkContrato')
     .addToUi();
 }
