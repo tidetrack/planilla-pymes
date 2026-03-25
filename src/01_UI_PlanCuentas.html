@@ -198,6 +198,8 @@
                     <option value="FISCAL">Carga Fiscal</option>
                     <option value="RESULTADOS">Resultados</option>
                     <option value="MEDIOS_PAGO">Medios de Pago</option>
+                    <option value="PROYECTOS">Proyectos (Master)</option>
+                    <option value="UEN_MASTER">Unidades de Negocio (UEN)</option>
                 </select>
             </div>
 
@@ -238,7 +240,7 @@
                 </div>
 
                 <div id="groupMonedaRel" class="form-group hidden">
-                    <label for="monedaRelacionada" class="form-label">Moneda <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Por Defecto ARS)</span></label>
+                    <label for="monedaRelacionada" class="form-label">Moneda <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Obligatorio)</span></label>
                     <select id="monedaRelacionada" name="monedaRelacionada" class="form-select"></select>
                 </div>
 
@@ -323,15 +325,24 @@
         const gP = document.getElementById('groupProyectoRel');
         [gU, gM, gP].forEach(x => x.classList.add('hidden'));
 
-        // La UEN es obligatoria para todos siempre
-        gU.classList.remove('hidden');
+        // Reset requires
+        document.getElementById('monedaRelacionada').required = false;
+        document.getElementById('uenRelacionada').required = false;
 
         if(entity === 'MEDIOS_PAGO') { 
             lbl.textContent = 'Medio Bancario / Billetera'; 
-            gM.classList.remove('hidden'); 
+            gM.classList.remove('hidden');
+            document.getElementById('monedaRelacionada').required = true;
             gP.classList.remove('hidden'); 
+        } else if(entity === 'PROYECTOS') {
+            lbl.textContent = 'Nombre del Proyecto';
+            gU.classList.remove('hidden');
+            document.getElementById('uenRelacionada').required = true;
+        } else if(entity === 'UEN_MASTER') {
+            lbl.textContent = 'Nombre de la UEN';
         } else if(entity === 'RESULTADOS') {
             lbl.textContent = 'Nombre de Resultado'; 
+            gP.classList.remove('hidden');
         } else { 
             lbl.textContent = 'Nombre de Cuenta'; 
             gP.classList.remove('hidden'); 

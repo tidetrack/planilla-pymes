@@ -26,7 +26,9 @@ const CONFIG = {
       GASTOS:      { colStart: 10, colCols: 3, label: "Gastos" },         // J a L
       FISCAL:      { colStart: 14, colCols: 3, label: "Carga Fiscal" },   // N a P
       RESULTADOS:  { colStart: 20, colCols: 2, label: "Resultados" },     // T a U (T=Nombre, U=Proyecto)
-      MEDIOS_PAGO: { colStart: 23, colCols: 3, label: "Medio de Pago" }   // W a Y (W=Medio, X=Moneda, Y=Proyecto)
+      MEDIOS_PAGO: { colStart: 23, colCols: 3, label: "Medio de Pago" },  // W a Y (W=Medio, X=Moneda, Y=Proyecto)
+      PROYECTOS:   { colStart: 27, colCols: 2, label: "Proyectos" },      // AA a AB (AA=Nombre, AB=UEN)
+      UEN_MASTER:  { colStart: 30, colCols: 1, label: "Sub-Unidades" }    // AD (AD=Nombre)
     }
   },
   RANGOS: {

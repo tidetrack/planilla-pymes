@@ -95,7 +95,10 @@ function getCategoryAccounts(entityType) {
        if (entityType === "MEDIOS_PAGO") {
           accountObj.moneda = row[1] || "";
           accountObj.proyecto = row[2] || "";
-       } else { // Ingresos, Costos, Gastos, Fiscal, Resultados
+       } else if (entityType === "PROYECTOS") {
+          accountObj.uen = row[1] || "";
+       } else if (entityType !== "UEN_MASTER") { 
+          // Ingresos, Costos, Gastos, Fiscal, Resultados
           accountObj.proyecto = row[1] || "";
        }
        accounts.push(accountObj);
@@ -132,7 +135,9 @@ function saveAbmRecord(payload) {
   if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
     sheet.getRange(insertRow, bloque.colStart + 2).setValue(proyectoRelacionado || "");
-  } else {
+  } else if (entityType === "PROYECTOS") {
+    sheet.getRange(insertRow, bloque.colStart + 1).setValue(uenRelacionada || "");
+  } else if (entityType !== "UEN_MASTER") {
     // Ingresos, Costos, Gastos, Fiscal, Resultados
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(proyectoRelacionado || "");
   }
@@ -156,7 +161,9 @@ function updateAbmRecord(payload) {
   if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
     sheet.getRange(rowIndex, bloque.colStart + 2).setValue(proyectoRelacionado || "");
-  } else {
+  } else if (entityType === "PROYECTOS") {
+    sheet.getRange(rowIndex, bloque.colStart + 1).setValue(uenRelacionada || "");
+  } else if (entityType !== "UEN_MASTER") {
     // Ingresos, Costos, Gastos, Fiscal, Resultados
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(proyectoRelacionado || "");
   }
