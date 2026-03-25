@@ -34,13 +34,21 @@ function onEdit(e) {
   // BLOQUE 1: LÓGICA EXCLUSIVA DE HOJA "CARGAS"
   // =================================================================
   if (sheetName === HOJA_CARGA_NAME && row >= 4 && row <= 23) {
+    // Módulo A: Monto (col C) → auto-fecha en col G
     if (col === COL_MONTO_IN) {
-      const cellFecha = sheet.getRange(row, COL_FECHA_OUT); 
-      // Si insertó un número en Monto y la Fecha estaba vacía
+      const cellFecha = sheet.getRange(row, COL_FECHA_OUT);
       if (cellFecha.getValue() === "" && range.getValue() !== "") {
         cellFecha.setValue(new Date());
       }
-      return; 
+      return;
+    }
+    // Módulo B: Monto devengado (col L=12) → auto-fecha registro en col P=16
+    if (col === 12) {
+      const cellFechaReg = sheet.getRange(row, 16); // col P
+      if (cellFechaReg.getValue() === "" && range.getValue() !== "") {
+        cellFechaReg.setValue(new Date());
+      }
+      return;
     }
   }
 
