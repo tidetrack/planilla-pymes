@@ -114,9 +114,34 @@ function procesarLoteCargas() {
     } else {
       fechaFX = fecha.toString().trim();
     }
-    const cotizacionObj = mapCotizaciones[fechaFX] || { venta: 1, compra: 1 };
-    const cotizacionDolar = Number(cotizacionObj.venta) || 1;                     // K
-    const cotizacionDolarCompra = Number(cotizacionObj.compra) || cotizacionDolar;  // L
+    const cotizacionObj = mapCotizaciones[fechaFX];
+    let cotizacionDolar, cotizacionDolarCompra;
+
+    if (cotizacionObj) {
+      cotizacionDolar = Number(cotizacionObj.venta) || 1;
+      cotizacionDolarCompra = Number(cotizacionObj.compra) || cotizacionDolar;
+    } else {
+      // Fallback: buscar en API para esa fecha
+      const fromApi = fetchCotizacionParaFecha(fechaFX);
+      if (fromApi) {
+        cotizacionDolar = fromApi.venta;
+        cotizacionDolarCompra = fromApi.compra;
+        // Persistir en la hoja Tipo de Cambio y actualizar mapa en memoria
+        sheetTipoCambio.insertRowBefore(4);
+        sheetTipoCambio.getRange("C4").setValue(fechaFX);
+        sheetTipoCambio.getRange("D4").setValue(fromApi.venta);
+        sheetTipoCambio.getRange("E4").setValue(fromApi.compra);
+        mapCotizaciones[fechaFX] = { venta: fromApi.venta, compra: fromApi.compra };
+      } else {
+        // Último recurso: heredar el día hábil anterior más cercano disponible
+        const fechasDisponibles = Object.keys(mapCotizaciones).sort().reverse();
+        const fechaBase = fechasDisponibles.find(f => f < fechaFX);
+        const fallback = fechaBase ? mapCotizaciones[fechaBase] : { venta: 1, compra: 1 };
+        cotizacionDolar = Number(fallback.venta) || 1;
+        cotizacionDolarCompra = Number(fallback.compra) || cotizacionDolar;
+        Logger.log(`FX fallback: sin datos para ${fechaFX}, usando ${fechaBase || 'default 1'}`);
+      }
+    }
 
     // Armar fila para "Registros" (Orden B a L)
     // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L)]

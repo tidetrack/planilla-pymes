@@ -198,6 +198,8 @@
                     <option value="FISCAL">Carga Fiscal</option>
                     <option value="RESULTADOS">Resultados</option>
                     <option value="MEDIOS_PAGO">Medios de Pago</option>
+                    <option value="CLIENTES">Clientes</option>
+                    <option value="PROVEEDORES">Proveedores</option>
                     <option value="PROYECTOS">Proyectos</option>
                     <option value="UEN_MASTER">Unidades de Negocio</option>
                 </select>
@@ -237,6 +239,11 @@
                 <div id="groupUenRel" class="form-group hidden">
                     <label for="uenRelacionada" class="form-label">Unidad de Negocio (UEN) <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Obligatorio)</span></label>
                     <select id="uenRelacionada" name="uenRelacionada" class="form-select"></select>
+                </div>
+
+                <div id="groupCuit" class="form-group hidden">
+                    <label for="cuitCuil" class="form-label">CUIT / CUIL <span style="font-weight:300; font-size:12px; color:var(--text-secondary)">(Obligatorio)</span></label>
+                    <input type="text" id="cuitCuil" name="cuitCuil" class="form-input" placeholder="Ej. 20-12345678-9" maxlength="13">
                 </div>
 
                 <div id="groupMonedaRel" class="form-group hidden">
@@ -323,13 +330,21 @@
         const gU = document.getElementById('groupUenRel');
         const gM = document.getElementById('groupMonedaRel');
         const gP = document.getElementById('groupProyectoRel');
-        [gU, gM, gP].forEach(x => x.classList.add('hidden'));
+        const gC = document.getElementById('groupCuit');
+        [gU, gM, gP, gC].forEach(x => x.classList.add('hidden'));
 
         // Reset requires
         document.getElementById('monedaRelacionada').required = false;
         document.getElementById('uenRelacionada').required = false;
+        document.getElementById('cuitCuil').required = false;
 
-        if(entity === 'MEDIOS_PAGO') { 
+
+        if(entity === 'CLIENTES' || entity === 'PROVEEDORES') {
+            lbl.textContent = 'Razón Social / Nombre';
+            gC.classList.remove('hidden');
+            document.getElementById('cuitCuil').required = true;
+            gP.classList.remove('hidden');
+        } else if(entity === 'MEDIOS_PAGO') { 
             lbl.textContent = 'Medio Bancario / Billetera'; 
             gM.classList.remove('hidden');
             document.getElementById('monedaRelacionada').required = true;
@@ -413,6 +428,7 @@
             uenRelacionada: document.getElementById('uenRelacionada').value,
             monedaRelacionada: document.getElementById('monedaRelacionada').value,
             proyectoRelacionado: document.getElementById('proyectoRelacionado').value,
+            cuit: document.getElementById('cuitCuil') ? document.getElementById('cuitCuil').value : '',
             rowIndex: selectedAccount ? selectedAccount.rowIndex : null
         };
         const func = currentMode === 'CREATE' ? 'saveAbmRecord' : 'updateAbmRecord';

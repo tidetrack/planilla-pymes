@@ -28,7 +28,9 @@ const CONFIG = {
       RESULTADOS:  { colStart: 20, colCols: 2, label: "Resultados" },     // T a U (T=Nombre, U=Proyecto)
       MEDIOS_PAGO: { colStart: 23, colCols: 3, label: "Medio de Pago" },  // W a Y (W=Medio, X=Moneda, Y=Proyecto)
       PROYECTOS:   { colStart: 27, colCols: 2, label: "Proyectos" },      // AA a AB (AA=Nombre, AB=UEN)
-      UEN_MASTER:  { colStart: 30, colCols: 1, label: "Sub-Unidades" }    // AD (AD=Nombre)
+      UEN_MASTER:  { colStart: 30, colCols: 1, label: "Sub-Unidades" },    // AD (AD=Nombre)
+      CLIENTES:    { colStart: 32, colCols: 3, label: "Clientes" },        // AF-AH (AF=Nombre, AG=CUIT/CUIL, AH=Proyecto)
+      PROVEEDORES: { colStart: 36, colCols: 3, label: "Proveedores" }      // AJ-AL (AJ=Nombre, AK=CUIT/CUIL, AL=Proyecto)
     }
   },
   RANGOS: {

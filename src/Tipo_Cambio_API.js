@@ -21,6 +21,27 @@ function fetchCotizacionDolar() {
   }
 }
 
+/**
+ * Busca la cotización del dólar oficial para una fecha específica.
+ * Si la fecha no tiene datos (feriado/fin de semana), retorna null.
+ * @param {string} fechaStr Fecha en formato "yyyy-MM-dd"
+ * @returns {{venta: number, compra: number}|null}
+ */
+function fetchCotizacionParaFecha(fechaStr) {
+  try {
+    const url = "https://api.argentinadatos.com/v1/cotizaciones/dolares/oficial";
+    const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    if (response.getResponseCode() !== 200) return null;
+    const data = JSON.parse(response.getContentText());
+    const entry = data.find(d => d.fecha === fechaStr);
+    if (!entry) return null;
+    return { venta: Number(entry.venta), compra: Number(entry.compra) };
+  } catch(e) {
+    Logger.log("fetchCotizacionParaFecha error: " + e);
+    return null;
+  }
+}
+
 function updateCacheTipoCambio() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(CONFIG.HOJAS.TIPO_CAMBIO);

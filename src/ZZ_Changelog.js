@@ -1,4 +1,12 @@
 /**
+ * [2026-03-25] v1.2.0 - Sprint 1b (Clientes, Proveedores y Fix FX):
+ * - Nuevos bloques CLIENTES (AF:AH) y PROVEEDORES (AJ:AL) en 00_Config.js y Plan de Cuentas.
+ * - CRUD extendido en 01_Backend_PlanCuentas.js para los nuevos tipos (Nombre, CUIT/CUIL, Proyecto).
+ * - UI actualizada: campo CUIT obligatorio en el ABM para Clientes y Proveedores.
+ * - Fix crítico en Carga_Registros.js: fallback FX inteligente (API → día anterior → default 1).
+ * - Nueva función fetchCotizacionParaFecha() en Tipo_Cambio_API.js con persistencia automática en hoja.
+ *
+ * ---
  * [2026-03-24] v1.1.0 - Sprint 1 (Módulo de Cargas interactivo):
  * - Triangulación relacional automatizada de Proyectos y UEN (Carga_Registros.js).
  * - Inyección de caché histórico de Dólar Compra/Venta usando API Argentina (Tipo_Cambio_API.js).
