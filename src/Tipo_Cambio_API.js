@@ -6,7 +6,7 @@
 
 function fetchCotizacionDolar() {
   try {
-    const url = "https://dolarapi.com/v1/dolares/mep"; 
+    const url = "https://dolarapi.com/v1/dolares/oficial"; 
     const response = UrlFetchApp.fetch(url);
     const data = JSON.parse(response.getContentText());
     
@@ -37,7 +37,7 @@ function updateCacheTipoCambio() {
 }
 
 /**
- * Función Developer: Fuerza la recolección de todo el historial del Dólar MEP
+ * Función Developer: Fuerza la recolección de todo el historial del Dólar Oficial
  * desde el 01/01/2026 hasta la fecha actual y lo vuelca en la base de datos "Tipo de Cambio".
  */
 function forzarCargaHistoricaUSD() {
@@ -49,8 +49,8 @@ function forzarCargaHistoricaUSD() {
   }
 
   try {
-    // ArgentinaDatos devuelve el histórico completo de todas las cotizaciones MEP
-    const url = "https://api.argentinadatos.com/v1/cotizaciones/dolares/mep";
+    // ArgentinaDatos devuelve el histórico completo de todas las cotizaciones Oficiales
+    const url = "https://api.argentinadatos.com/v1/cotizaciones/dolares/oficial";
     const response = UrlFetchApp.fetch(url);
     const data = JSON.parse(response.getContentText());
 
@@ -82,7 +82,7 @@ function forzarCargaHistoricaUSD() {
     // Insertar el nuevo bloque masivo
     sheet.getRange(4, 3, valoresAInsertar.length, 3).setValues(valoresAInsertar);
 
-    SpreadsheetApp.getUi().alert(`✅ Éxito: Se volcaron ${valoresAInsertar.length} registros históricos del Dólar MEP (Compra y Venta) ordenados desde hoy hasta 01-01-2026.`);
+    SpreadsheetApp.getUi().alert(`✅ Éxito: Se volcaron ${valoresAInsertar.length} registros históricos del Dólar Oficial (Compra y Venta) ordenados desde hoy hasta 01-01-2026.`);
 
   } catch (error) {
     SpreadsheetApp.getUi().alert("Fallo al acceder al historial: " + error);
