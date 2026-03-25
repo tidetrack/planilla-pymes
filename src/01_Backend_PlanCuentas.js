@@ -114,7 +114,7 @@ function getCategoryAccounts(entityType) {
 function saveAbmRecord(payload) {
   const { entityType, nombre, uenRelacionada, proyectoRelacionado, monedaRelacionada } = payload;
   if (!nombre) throw new Error("Debe proveer un nombre para la cuenta.");
-  if (!uenRelacionada) throw new Error("La UEN es obligatoria.");
+  if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para dar de alta un Proyecto.");
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.HOJAS.PLAN_CUENTAS);
   const bloque = CONFIG.PLAN_CUENTAS.BLOQUES[entityType];
@@ -151,7 +151,7 @@ function saveAbmRecord(payload) {
 function updateAbmRecord(payload) {
   const { entityType, rowIndex, nombre, uenRelacionada, proyectoRelacionado, monedaRelacionada } = payload;
   if (!nombre) throw new Error("Debe proveer un nombre.");
-  if (!uenRelacionada) throw new Error("La UEN es obligatoria.");
+  if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para modificar un Proyecto.");
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.HOJAS.PLAN_CUENTAS);
   const bloque = CONFIG.PLAN_CUENTAS.BLOQUES[entityType];
