@@ -133,21 +133,27 @@ function procesarLoteCargas() {
     return timeB - timeA;
   });
 
-  // 4. Escribir en 'Registros' (Fila 3 hacia abajo)
-  sheetRegistros.insertRowsBefore(3, nuevasFilas.length);
-  sheetRegistros.getRange(3, 2, nuevasFilas.length, 10).setValues(nuevasFilas);
+  // 4. Escribir en 'Registros' (Fila 4 hacia abajo, debajo de los encabezados)
+  const insertStartRow = 4;
+  sheetRegistros.insertRowsBefore(insertStartRow, nuevasFilas.length);
+  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 10).setValues(nuevasFilas);
 
-  // Todo el bloque de "Registros" debería ser re-ordenado por Fecha Z:A para asegurar integridad total? 
-  // Opcional: ordenar toda la hoja. Como se inserta arriba las mas nuevas, es casi automatico, pero podemos forzarlo.
-  const numRowsTotal = sheetRegistros.getLastRow() - 2;
+  // Copiar formato desde la fila "6" antigua (ahora desplazada) para no heredar el fondo del encabezado
+  // O en su defecto, forzar un formato limpio:
+  const formatoCleanRange = sheetRegistros.getRange(insertStartRow, 1, nuevasFilas.length, sheetRegistros.getMaxColumns());
+  formatoCleanRange.setBackground(null)
+                   .setFontWeight("normal")
+                   .setFontColor("black");
+
+  // Ordenamos si existen datos previos
+  const numRowsTotal = sheetRegistros.getLastRow() - insertStartRow + 1;
   if (numRowsTotal > 0) {
-    const fullRange = sheetRegistros.getRange(3, 2, numRowsTotal, 10);
-    // Ordenar col B (columna 2 real) descendente
+    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 10);
     fullRange.sort({column: 2, ascending: false});
   }
 
   // 5. Limpieza del lote en 'Cargas'
   rangoCargas.clearContent();
   
-  SpreadsheetApp.getUi().alert("✅ Lote de registros procesado e insertado exitosamente en orden Z:A.");
+  ss.toast("Lote procesado exitosamente.", "Tidetrack", 3);
 }
