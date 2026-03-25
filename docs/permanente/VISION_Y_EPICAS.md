@@ -7,15 +7,16 @@ Se requiere profundizar en cuentas corrientes complejas, medición de liquidez y
 
 ## Roadmap (Product Backlog) - Los 7 Sprints
 
-### Sprint 1: Unidades Estratégicas de Negocio (UENS)
+### ✅ Sprint 1: Unidades Estratégicas de Negocio (UENS) — COMPLETADO
 - **Descripción**: Implementar UENS transversalmente en la base de datos y la carga de información, además de los actuales "Proyectos".
 - **Objetivo**: Permitir análisis P&L (Pérdidas y Ganancias) segmentados por Unidad de Negocio.
+- **Completado**: v1.1.0 + v1.2.0. Incluye glosario de Clientes/Proveedores (CUIT) y fix FX inteligente.
 
-### Sprint 2: Motor de Liquidez y Monedas
+### ⏸️ Sprint 2: Motor de Liquidez y Monedas — DIFERIDO
 - **Descripción**: Arreglar la situación de cálculo de liquidez actual.
 - **Objetivo**: Implementar un seguimiento preciso de flujos y medios de pago aplicando filtros de tipo de moneda de forma dinámica (ej. ARS vs USD).
 
-### Sprint 3: Cuentas por Pagar y Cobrar (CxP / CxC)
+### 🔄 Sprint 3: Cuentas por Pagar y Cobrar (CxP / CxC) — EN PROGRESO
 - **Descripción**: Mapeo estricto de deudas y saldos pendientes.
 - **Objetivo**: Cruces de información de CxP y CxC segmentados por UENS.
 

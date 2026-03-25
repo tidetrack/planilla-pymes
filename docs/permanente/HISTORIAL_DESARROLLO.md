@@ -3,6 +3,23 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
+## 2026-03-25 - Sprint 1b: Clientes, Proveedores y Fix FX (v1.2.0)
+
+### Evento
+Extensión del Sprint 1. Se agregaron BDs de Clientes y Proveedores como preparación para las CxP/CxC (Sprint 3), y se corrigió el bug crítico de cotización del dólar.
+
+### Cambios Implementados
+- Nuevos bloques `CLIENTES` (AF:AH) y `PROVEEDORES` (AJ:AL) en `00_Config.js`.
+- CRUD extendido en `01_Backend_PlanCuentas.js` para ambos tipos (Nombre, CUIT/CUIL, Proyecto).
+- Campo CUIT obligatorio en el ABM (`01_UI_PlanCuentas.html`).
+- Fix crítico en `Carga_Registros.js`: fecha de HOY → API live (`dolarapi.com`) primero; fecha histórica → caché → `argentinadatos.com`.
+- Nueva función `fetchCotizacionParaFecha()` en `Tipo_Cambio_API.js` con persistencia automática en caché.
+
+### Resultado
+- El sistema ya cuenta con un glosario de Clientes y Proveedores ABM-administrable.
+- Los registros de carga siempre reciben la cotización real del dólar, sin el bug del $1.
+
+---
 ## 2026-03-24 - Cambio de Paradigma: Arquitectura AI-First (v0.2.0)
 
 ### Evento
