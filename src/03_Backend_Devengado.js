@@ -46,7 +46,7 @@ function procesarLoteDevengado() {
 
   try { ss.toast("Procesando compromisos devengados...", "Tidetrack", 3); } catch(e) {}
 
-  // 1. Leer Módulo B: K4:Q23 → [Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota]
+  // 1. Leer Módulo B: L4:R23 → [Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota]
   const datosDevengado = sheetCargas.getRange(CONFIG.RANGOS.CARGAS_DEVENGADO).getValues();
 
   // 2. Construir mapa Cuenta → Proyecto desde Plan de Cuentas (mismo patrón que Carga_Registros)

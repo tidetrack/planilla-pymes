@@ -35,7 +35,7 @@ const CONFIG = {
     }
   },
   RANGOS: {
-    CARGAS_MODULO:    "C4:I23",  // Módulo A: Flujo (+col I ID_CXC)
-    CARGAS_DEVENGADO: "K4:Q23"   // Módulo B: Compromisos CxP/CxC
+    CARGAS_MODULO:    "C4:I23",  // Módulo A: Flujo (C=Monto, D=Tipo, E=Cuenta, F=Medio, G=Fecha, H=Nota, I=ID_Compromiso)
+    CARGAS_DEVENGADO: "L4:R23"   // Módulo B: Compromisos CxP/CxC (L=Monto, M=Tipo, N=Contraparte, N=Cuenta, O=FechaReg, P=FechaComp, Q=Nota)
   }
 };
