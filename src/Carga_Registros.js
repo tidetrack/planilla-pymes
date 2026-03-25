@@ -114,32 +114,51 @@ function procesarLoteCargas() {
     } else {
       fechaFX = fecha.toString().trim();
     }
-    const cotizacionObj = mapCotizaciones[fechaFX];
+    const fechaHoy = Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), "yyyy-MM-dd");
     let cotizacionDolar, cotizacionDolarCompra;
 
-    if (cotizacionObj) {
-      cotizacionDolar = Number(cotizacionObj.venta) || 1;
-      cotizacionDolarCompra = Number(cotizacionObj.compra) || cotizacionDolar;
-    } else {
-      // Fallback: buscar en API para esa fecha
-      const fromApi = fetchCotizacionParaFecha(fechaFX);
-      if (fromApi) {
-        cotizacionDolar = fromApi.venta;
-        cotizacionDolarCompra = fromApi.compra;
-        // Persistir en la hoja Tipo de Cambio y actualizar mapa en memoria
-        sheetTipoCambio.insertRowBefore(4);
-        sheetTipoCambio.getRange("C4").setValue(fechaFX);
-        sheetTipoCambio.getRange("D4").setValue(fromApi.venta);
-        sheetTipoCambio.getRange("E4").setValue(fromApi.compra);
-        mapCotizaciones[fechaFX] = { venta: fromApi.venta, compra: fromApi.compra };
+    if (fechaFX === fechaHoy) {
+      // PRIORIDAD 1: Fecha de hoy → siempre buscar cotización en tiempo real
+      const live = fetchCotizacionDolar();
+      if (live && live.venta) {
+        cotizacionDolar = live.venta;
+        cotizacionDolarCompra = live.compra;
+        // Actualizar/persistir en caché también
+        mapCotizaciones[fechaFX] = { venta: live.venta, compra: live.compra };
       } else {
-        // Último recurso: heredar el día hábil anterior más cercano disponible
-        const fechasDisponibles = Object.keys(mapCotizaciones).sort().reverse();
-        const fechaBase = fechasDisponibles.find(f => f < fechaFX);
-        const fallback = fechaBase ? mapCotizaciones[fechaBase] : { venta: 1, compra: 1 };
-        cotizacionDolar = Number(fallback.venta) || 1;
-        cotizacionDolarCompra = Number(fallback.compra) || cotizacionDolar;
-        Logger.log(`FX fallback: sin datos para ${fechaFX}, usando ${fechaBase || 'default 1'}`);
+        // Si la API live falla, caer al caché del día de hoy si existe
+        const cached = mapCotizaciones[fechaFX];
+        cotizacionDolar = cached ? Number(cached.venta) : 1;
+        cotizacionDolarCompra = cached ? Number(cached.compra) : cotizacionDolar;
+        Logger.log("FX: API live fallida, usando caché del día.");
+      }
+    } else {
+      // PRIORIDAD 2: Fecha histórica → buscar en caché primero
+      const cotizacionObj = mapCotizaciones[fechaFX];
+      if (cotizacionObj) {
+        cotizacionDolar = Number(cotizacionObj.venta) || 1;
+        cotizacionDolarCompra = Number(cotizacionObj.compra) || cotizacionDolar;
+      } else {
+        // Si no está en caché, consultar argentinadatos.com para esa fecha puntual
+        const fromApi = fetchCotizacionParaFecha(fechaFX);
+        if (fromApi) {
+          cotizacionDolar = fromApi.venta;
+          cotizacionDolarCompra = fromApi.compra;
+          // Persistir en la hoja Tipo de Cambio y actualizar mapa en memoria
+          sheetTipoCambio.insertRowBefore(4);
+          sheetTipoCambio.getRange("C4").setValue(fechaFX);
+          sheetTipoCambio.getRange("D4").setValue(fromApi.venta);
+          sheetTipoCambio.getRange("E4").setValue(fromApi.compra);
+          mapCotizaciones[fechaFX] = { venta: fromApi.venta, compra: fromApi.compra };
+        } else {
+          // Último recurso: heredar el día hábil anterior más cercano disponible
+          const fechasDisponibles = Object.keys(mapCotizaciones).sort().reverse();
+          const fechaBase = fechasDisponibles.find(f => f < fechaFX);
+          const fallback = fechaBase ? mapCotizaciones[fechaBase] : { venta: 1, compra: 1 };
+          cotizacionDolar = Number(fallback.venta) || 1;
+          cotizacionDolarCompra = Number(fallback.compra) || cotizacionDolar;
+          Logger.log(`FX fallback: sin datos para ${fechaFX}, usando ${fechaBase || 'default 1'}`);
+        }
       }
     }
 
