@@ -18,7 +18,7 @@ const CONFIG = {
       PROYECTOS: "AA",   // Antes AF
       UEN: "AB",         // Antes AG
       PROYECTOS_UEN: 1,   // Índice relativo de UEN respecto a Proyectos (Col AA a AB = 1 col de salto)
-      UEN_MASTER: "AI"
+      UEN_MASTER: "AD"
     },
     BLOQUES: {
       INGRESOS:    { colStart: 2,  colCols: 3, label: "Ingresos" },       // B a D

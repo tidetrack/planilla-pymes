@@ -58,8 +58,8 @@ function getAbmFormData() {
   const rangosProyectos = sheet.getRange(CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.PROYECTOS + "3:" + CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.PROYECTOS + lastRow).getValues();
   const proyectosUnicos = [...new Set(rangosProyectos.flat().filter(p => p && p.toString().trim() !== ""))].sort();
   
-  // UEN: Col AH
-  const rangosUEN = sheet.getRange(CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.UEN + "3:" + CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.UEN + lastRow).getValues();
+  // UEN: Master list (AD)
+  const rangosUEN = sheet.getRange(CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.UEN_MASTER + "3:" + CONFIG.PLAN_CUENTAS.RANGOS_GLOBALES.UEN_MASTER + lastRow).getValues();
   const uenUnicas = [...new Set(rangosUEN.flat().filter(u => u && u.toString().trim() !== ""))].sort();
   
   return { 
