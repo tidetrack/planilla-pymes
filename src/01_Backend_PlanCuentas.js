@@ -92,18 +92,12 @@ function getCategoryAccounts(entityType) {
           uen: ""
        };
 
-       if (entityType === "RESULTADOS") {
-          accountObj.uen = row[1] || "";
-       } else if (entityType === "MEDIOS_PAGO") {
+       if (entityType === "MEDIOS_PAGO") {
           accountObj.moneda = row[1] || "";
           accountObj.proyecto = row[2] || "";
-          accountObj.uen = row[3] || "";
-       } else { // Ingresos, Costos, Gastos, Fiscal
+       } else { // Ingresos, Costos, Gastos, Fiscal, Resultados
           accountObj.proyecto = row[1] || "";
-          accountObj.uen = row[2] || "";
-          // row[3] fecha de vencimiento (no editable desde abm por ahora)
        }
-
        accounts.push(accountObj);
     }
   });
@@ -135,16 +129,12 @@ function saveAbmRecord(payload) {
   // Insertar según bloque
   sheet.getRange(insertRow, bloque.colStart).setValue(nombre.trim());
 
-  if (entityType === "RESULTADOS") {
-    sheet.getRange(insertRow, bloque.colStart + 1).setValue(uenRelacionada);
-  } else if (entityType === "MEDIOS_PAGO") {
+  if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
     sheet.getRange(insertRow, bloque.colStart + 2).setValue(proyectoRelacionado || "");
-    sheet.getRange(insertRow, bloque.colStart + 3).setValue(uenRelacionada);
   } else {
-    // Ingresos, Costos, Gastos, Fiscal
+    // Ingresos, Costos, Gastos, Fiscal, Resultados
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(proyectoRelacionado || "");
-    sheet.getRange(insertRow, bloque.colStart + 2).setValue(uenRelacionada);
   }
 
   return { nombre: nombre };
@@ -163,15 +153,12 @@ function updateAbmRecord(payload) {
 
   sheet.getRange(rowIndex, bloque.colStart).setValue(nombre.trim());
 
-  if (entityType === "RESULTADOS") {
-    sheet.getRange(rowIndex, bloque.colStart + 1).setValue(uenRelacionada);
-  } else if (entityType === "MEDIOS_PAGO") {
+  if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
     sheet.getRange(rowIndex, bloque.colStart + 2).setValue(proyectoRelacionado || "");
-    sheet.getRange(rowIndex, bloque.colStart + 3).setValue(uenRelacionada);
   } else {
+    // Ingresos, Costos, Gastos, Fiscal, Resultados
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(proyectoRelacionado || "");
-    sheet.getRange(rowIndex, bloque.colStart + 2).setValue(uenRelacionada);
   }
 
   return { nombre: nombre };

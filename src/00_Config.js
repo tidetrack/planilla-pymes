@@ -13,19 +13,20 @@ const CONFIG = {
   },
   PLAN_CUENTAS: {
     INICIO_FILA_DATOS: 3,
-    BLOQUES: {
-      "INGRESOS": { nombre: "Ingresos y recursos", colStart: 2, colCols: 4 }, // B:E
-      "COSTOS": { nombre: "Costo de ventas", colStart: 7, colCols: 4 }, // G:J
-      "GASTOS": { nombre: "Gastos", colStart: 12, colCols: 4 }, // L:O
-      "FISCAL": { nombre: "Carga Fiscal", colStart: 17, colCols: 4 }, // Q:T
-      "RESULTADOS": { nombre: "Resultados", colStart: 24, colCols: 2 }, // X:Y
-      "MEDIOS_PAGO": { nombre: "Medios de Pago", colStart: 27, colCols: 4 } // AA:AD
-    },
     RANGOS_GLOBALES: {
       MOVIMIENTOS: "V",
-      PROYECTOS: "AF",
-      PROYECTOS_UEN: "AG",
+      PROYECTOS: "AA",   // Antes AF
+      UEN: "AB",         // Antes AG
+      PROYECTOS_UEN: 1,   // Índice relativo de UEN respecto a Proyectos (Col AA a AB = 1 col de salto)
       UEN_MASTER: "AI"
+    },
+    BLOQUES: {
+      INGRESOS:    { colStart: 2,  colCols: 3, label: "Ingresos" },       // B a D
+      COSTOS:      { colStart: 6,  colCols: 3, label: "Costos de Venta" },// F a H
+      GASTOS:      { colStart: 10, colCols: 3, label: "Gastos" },         // J a L
+      FISCAL:      { colStart: 14, colCols: 3, label: "Carga Fiscal" },   // N a P
+      RESULTADOS:  { colStart: 20, colCols: 2, label: "Resultados" },     // T a U (T=Nombre, U=Proyecto)
+      MEDIOS_PAGO: { colStart: 23, colCols: 3, label: "Medio de Pago" }   // W a Y (W=Medio, X=Moneda, Y=Proyecto)
     }
   },
   RANGOS: {
