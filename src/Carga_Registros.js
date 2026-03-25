@@ -144,12 +144,11 @@ function procesarLoteCargas() {
   sheetRegistros.insertRowsBefore(insertStartRow, nuevasFilas.length);
   sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 11).setValues(nuevasFilas);
 
-  // Copiar formato desde la fila "6" antigua (ahora desplazada) para no heredar el fondo del encabezado
-  // O en su defecto, forzar un formato limpio:
-  const formatoCleanRange = sheetRegistros.getRange(insertStartRow, 1, nuevasFilas.length, sheetRegistros.getMaxColumns());
-  formatoCleanRange.setBackground(null)
-                   .setFontWeight("normal")
-                   .setFontColor("black");
+  // Copiar formato desde la fila de datos inmediatamente inferior (la antigua fila 4 desplazada)
+  // para heredar correctamente formatos de moneda, fechas y colores sin arrastrar el fondo del encabezado.
+  const filaDesplazada = sheetRegistros.getRange(insertStartRow + nuevasFilas.length, 1, 1, sheetRegistros.getMaxColumns());
+  const targetRango = sheetRegistros.getRange(insertStartRow, 1, nuevasFilas.length, sheetRegistros.getMaxColumns());
+  filaDesplazada.copyTo(targetRango, SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
 
   // Ordenamos si existen datos previos
   const numRowsTotal = sheetRegistros.getLastRow() - insertStartRow + 1;
