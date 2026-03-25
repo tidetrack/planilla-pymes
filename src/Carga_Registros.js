@@ -107,8 +107,8 @@ function procesarLoteCargas() {
       fechaFX = fecha.toString().trim();
     }
     const cotizacionObj = mapCotizaciones[fechaFX] || { venta: 1, compra: 1 };
-    const cotizacionDolar = cotizacionObj.venta || 1;         // K
-    const cotizacionDolarCompra = cotizacionObj.compra || 1;  // L
+    const cotizacionDolar = Number(cotizacionObj.venta) || 1;                     // K
+    const cotizacionDolarCompra = Number(cotizacionObj.compra) || cotizacionDolar;  // L
 
     // Armar fila para "Registros" (Orden B a L)
     // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L)]
