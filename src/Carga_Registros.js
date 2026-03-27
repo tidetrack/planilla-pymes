@@ -130,7 +130,6 @@ function procesarLoteCargas() {
         const cached = mapCotizaciones[fechaFX];
         cotizacionDolar = cached ? Number(cached.venta) : 1;
         cotizacionDolarCompra = cached ? Number(cached.compra) : cotizacionDolar;
-        Logger.log("FX: API live fallida, usando caché del día.");
       }
     } else {
       // PRIORIDAD 2: Fecha histórica → buscar en caché primero
@@ -157,7 +156,6 @@ function procesarLoteCargas() {
           const fallback = fechaBase ? mapCotizaciones[fechaBase] : { venta: 1, compra: 1 };
           cotizacionDolar = Number(fallback.venta) || 1;
           cotizacionDolarCompra = Number(fallback.compra) || cotizacionDolar;
-          Logger.log(`FX fallback: sin datos para ${fechaFX}, usando ${fechaBase || 'default 1'}`);
         }
       }
     }

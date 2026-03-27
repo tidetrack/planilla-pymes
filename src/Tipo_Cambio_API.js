@@ -16,7 +16,6 @@ function fetchCotizacionDolar() {
       fecha: data.fechaActualizacion
     };
   } catch (error) {
-    Logger.log("Error consultando DolarAPI: " + error);
     return null;
   }
 }
@@ -37,7 +36,6 @@ function fetchCotizacionParaFecha(fechaStr) {
     if (!entry) return null;
     return { venta: Number(entry.venta), compra: Number(entry.compra) };
   } catch(e) {
-    Logger.log("fetchCotizacionParaFecha error: " + e);
     return null;
   }
 }
