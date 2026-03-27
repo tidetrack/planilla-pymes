@@ -95,3 +95,25 @@ Libro de compromisos devengados (CxP y CxC). Alimentada automáticamente desde e
 
 ---
 > **Nota de Arquitectura**: Registrar todo lo que ocurre basándose en este Plan de Cuentas es la regla única para permitir distintas visiones, análisis e interpretaciones (Flujos de fondos).
+
+---
+
+## Hoja de BD | Registros - Presupuesto
+
+Libro de montos presupuestados por cuenta y período. Alimentada automáticamente desde el Bloque C de la hoja **Cargas** (`C56:I75`) mediante la función `procesarLotePresupuesto()`. Los datos comienzan en **fila 6** (fila 5 = encabezados), ordenados Z→A por Fecha carga.
+
+| Col | Campo | Tipo / Origen |
+|---|---|---|
+| B | Fecha Carga | Auto (timestamp al procesar el lote) |
+| C | Monto | Manual (col C de Cargas) |
+| D | Fecha Presupuestada | Manual — período al que aplica (col H de Cargas) |
+| E | Tipo | Auto-inferido desde Plan de Cuentas (`Ingreso / Costo / Gasto / Fiscal / Resultado`) |
+| F | Cuenta | Manual (col D de Cargas) |
+| G | Proyecto Asociado | Auto-inferido desde la Cuenta |
+| H | Unidad Asociada | Auto-inferida desde el Proyecto |
+| I | Moneda | Manual (`ARS` / `USD`, col F de Cargas) |
+| J | Nota | Libre (col I de Cargas) |
+| K | Cotización USD Venta | Auto (API live al procesar) |
+| L | Cotización USD Compra | Auto (API live al procesar) |
+
+

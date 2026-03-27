@@ -15,13 +15,17 @@
 function onOpen(e) {
   SpreadsheetApp.getUi()
     .createMenu('Finanzas Tidetrack')
-    .addItem('Gestionar Plan de Cuentas', 'abrirAbmPlanCuentas')
+    .addItem('📋 Gestionar Plan de Cuentas', 'abrirAbmPlanCuentas')
     .addSeparator()
-    .addItem('🛠️ Procesar Lote de Carga', 'procesarLoteCargas')
-    .addItem('🛠️ Procesar Lote Devengado (CxP/CxC)', 'procesarLoteDevengado')
-    .addItem('🛠️ Forzar Carga Histórica USD (Desde 2026)', 'forzarCargaHistoricaUSD')
+    .addSubMenu(SpreadsheetApp.getUi().createMenu('⬆️ Procesar Cargas')
+      .addItem('💸 Lote Movimientos (Bloque A)',        'procesarLoteCargas')
+      .addItem('📑 Lote Compromisos CxP/CxC (Bloque B)', 'procesarLoteDevengado')
+      .addItem('📊 Lote Presupuesto (Bloque C)',          'procesarLotePresupuesto')
+    )
     .addSeparator()
-    .addItem('Contrato Tidetrack', 'mostrarLinkContrato')
+    .addItem('🔄 Forzar Carga Histórica USD (Desde 2026)', 'forzarCargaHistoricaUSD')
+    .addSeparator()
+    .addItem('📄 Contrato Tidetrack', 'mostrarLinkContrato')
     .addToUi();
 }
 

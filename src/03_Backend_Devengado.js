@@ -46,8 +46,11 @@ function procesarLoteDevengado() {
 
   try { ss.toast("Procesando compromisos devengados...", "Tidetrack", 3); } catch(e) {}
 
-  // 1. Leer Módulo B: L4:R23 → [Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota]
-  const datosDevengado = sheetCargas.getRange(CONFIG.RANGOS.CARGAS_DEVENGADO).getValues();
+  // Rango con fallback defensivo por si el config fue desplegado parcialmente
+  const rangoCompromisos = (CONFIG.RANGOS && CONFIG.RANGOS.CARGAS_COMPROMISOS) || "C31:I50";
+
+  // 1. Leer Bloque B (C31:I50) → [Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota]
+  const datosDevengado = sheetCargas.getRange(rangoCompromisos).getValues();
 
   // 2. Construir mapa Cuenta → Proyecto desde Plan de Cuentas (mismo patrón que Carga_Registros)
   const mapCuentaProyecto = {};
@@ -138,18 +141,23 @@ function procesarLoteDevengado() {
   sheetCompromisos.insertRowsBefore(insertRow, nuevasFilas.length);
   sheetCompromisos.getRange(insertRow, 2, nuevasFilas.length, 16).setValues(nuevasFilas);
 
-  // 7. Inyectar fórmulas en las columnas calculadas (F, G, H, I) por cada fila insertada
+  // Copiar formato desde la antigua primera fila de datos (ahora desplazada)
+  const filaFormatoOrigen  = sheetCompromisos.getRange(insertRow + nuevasFilas.length, 1, 1, sheetCompromisos.getMaxColumns());
+  const filaFormatoDestino = sheetCompromisos.getRange(insertRow, 1, nuevasFilas.length, sheetCompromisos.getMaxColumns());
+  filaFormatoOrigen.copyTo(filaFormatoDestino, SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+
+  // 7. Inyectar fórmulas calculadas (F, G, H, I) — setFormula() SIEMPRE requiere nombres en inglés
   for (let r = 0; r < nuevasFilas.length; r++) {
-    const fila = insertRow + r;
+    const fila  = insertRow + r;
     const idRef = `B${fila}`;
-    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMAR.SI('Registros - Movimientos'!M:M,${idRef},'Registros - Movimientos'!C:C)`);           // F: Total Imputado
-    sheetCompromisos.getRange(fila, 7).setFormula(`=E${fila}-F${fila}`);                                      // G: Saldo
-    sheetCompromisos.getRange(fila, 8).setFormula(`=SI.ERROR(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef}),"")`); // H: Fecha Último Pago
-    sheetCompromisos.getRange(fila, 9).setFormula(`=SI(G${fila}<=0,"Cancelado",SI(F${fila}>0,"Parcial","Pendiente"))`); // I: Estado
+    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMIF('Registros - Movimientos'!M:M,${idRef},'Registros - Movimientos'!C:C)`);            // F: Total Imputado
+    sheetCompromisos.getRange(fila, 7).setFormula(`=E${fila}-F${fila}`);                                                                      // G: Saldo
+    sheetCompromisos.getRange(fila, 8).setFormula(`=IFERROR(IF(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef})=0,"",MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef})),"")`); //H: Fecha Último Pago
+    sheetCompromisos.getRange(fila, 9).setFormula(`=IF(G${fila}<=0,"Cancelado",IF(F${fila}>0,"Parcial","Pendiente"))`);                       // I: Estado
   }
 
-  // 8. Limpiar el módulo B en Cargas
-  sheetCargas.getRange(CONFIG.RANGOS.CARGAS_DEVENGADO).clearContent();
+  // 8. Limpiar el Bloque B en Cargas
+  sheetCargas.getRange(rangoCompromisos).clearContent();
 
   try { ss.toast(`${nuevasFilas.length} compromiso(s) registrado(s) correctamente.`, "Tidetrack", 4); } catch(e) {}
 }

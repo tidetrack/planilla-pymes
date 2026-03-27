@@ -6,11 +6,12 @@
 
 const CONFIG = {
   HOJAS: {
-    PLAN_CUENTAS: "Plan de Cuentas",
-    CARGAS: "Cargas",
-    REGISTROS: "Registros - Movimientos",
-    TIPO_CAMBIO: "Tipo de Cambio",
-    COMPROMISOS: "Registros - Compromisos"
+    PLAN_CUENTAS:  "Plan de Cuentas",
+    CARGAS:        "Cargas",
+    REGISTROS:     "Registros - Movimientos",
+    TIPO_CAMBIO:   "Tipo de Cambio",
+    COMPROMISOS:   "Registros - Compromisos",
+    PRESUPUESTO:   "Registros - Presupuesto"
   },
   PLAN_CUENTAS: {
     INICIO_FILA_DATOS: 3,
@@ -35,7 +36,9 @@ const CONFIG = {
     }
   },
   RANGOS: {
-    CARGAS_MODULO:    "C4:I23",  // Módulo A: Flujo (C=Monto, D=Tipo, E=Cuenta, F=Medio, G=Fecha, H=Nota, I=ID_Compromiso)
-    CARGAS_DEVENGADO: "L4:R23"   // Módulo B: Compromisos CxP/CxC (L=Monto, M=Tipo, N=Contraparte, N=Cuenta, O=FechaReg, P=FechaComp, Q=Nota)
+    // Hoja Cargas — 3 bloques, fila X = encabezado, datos desde X+1
+    CARGAS_MOVIMIENTOS:  "C6:I25",  // Bloque A (fila 5 enc.): C=Monto, D=Tipo, E=Cuenta, F=Medio, G=Fecha(auto), H=Nota, I=ID_Compromiso
+    CARGAS_COMPROMISOS:  "C31:I50", // Bloque B (fila 30 enc.): C=Monto, D=Tipo, E=Contraparte, F=Cuenta, G=FechaReg(auto), H=FechaCompromiso, I=Nota
+    CARGAS_PRESUPUESTO:  "C56:I75"  // Bloque C (fila 55 enc.): C=Monto, D=Cuenta, -, F=Moneda, G=Fecha(auto), H=Nota
   }
 };

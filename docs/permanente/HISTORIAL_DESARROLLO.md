@@ -3,7 +3,25 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
-## 2026-03-25 - Sprint 3: Motor CxP/CxC — Registros - Compromisos (v1.3.0)
+## 2026-03-27 - Sprint 5: Módulo Presupuesto + Reestructuración Cargas (v1.4.0)
+
+### Evento
+Se inició el Sprint 5: reestructuración de la hoja `Cargas` en 3 bloques independientes y creación del módulo completo de carga de presupuesto con BD normalizada.
+
+### Cambios Implementados
+- **Hoja `Cargas` reestructurada**: Bloque A `C6:I25` (Movimientos), Bloque B `C31:I50` (Compromisos), Bloque C `C56:I75` (Presupuesto).
+- **`TRIGGER_onEdit.js` unificado**: Los 3 bloques usan col C (monto) como trigger y col G como destino de auto-fecha.
+- **`00_Config.js`**: Nuevas claves `CARGAS_MOVIMIENTOS`, `CARGAS_COMPROMISOS`, `CARGAS_PRESUPUESTO` y hoja `PRESUPUESTO`.
+- **`04_Backend_Presupuesto.js`** (NUEVO): Lee Bloque C, infiere Tipo/Proyecto/UEN, escribe en `Registros - Presupuesto` con cotización FX live.
+- **`Carga_Registros.js`** y **`03_Backend_Devengado.js`**: Referencias de rango actualizadas a los nuevos nombres de constante.
+- **`MODELO_DATOS.md`** y **`CONTEXTO_LLM.md`**: Documentados `Registros - Presupuesto` y la nueva estructura de bloques de Cargas.
+
+### Resultado
+- La hoja `Cargas` centraliza los 3 flujos de carga (movimientos, compromisos y presupuesto) sin rangos superpuestos.
+- El ciclo de carga de presupuesto queda completamente automatizado: ingreso en hoja → procesar lote → BD normalizada.
+
+---
+
 
 ### Evento
 Se implementó el módulo completo de Cuentas por Cobrar y Pagar con una BD propia (`Registros - Compromisos`) y un módulo de carga dedicado dentro de la hoja `Cargas`.

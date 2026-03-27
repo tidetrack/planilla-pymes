@@ -5,10 +5,12 @@ const HOJA_CARGA_NAME = "Cargas";
 
 // =================================================================
 // MAPA DE COLUMNAS DE LA HOJA "CARGAS"
-// A=1, B=2, C=3 (Monto), G=7 (Fecha)
+// Bloque A — Movimientos:  filas 6-25   (col C trigger → G auto-fecha)
+// Bloque B — Compromisos:  filas 31-50  (col C trigger → G auto-fecha)
+// Bloque C — Presupuesto:  filas 56-75  (col G = Fecha presupuestada MANUAL, sin auto-fecha)
 // =================================================================
-const COL_MONTO_IN       = 3; // (C) Trigger para poner fecha
-const COL_FECHA_OUT      = 7; // (G) Dónde se escribe la fecha
+const COL_MONTO_IN  = 3; // (C) Trigger para poner fecha en Bloques A y B
+const COL_FECHA_OUT = 7; // (G) Destino de auto-fecha en Bloques A y B
 
 // Configuraciones para Lógica D (Checkboxes en Panel)
 const COL_STORAGE_NOMBRES = 96; // Columna CR
@@ -33,20 +35,16 @@ function onEdit(e) {
   // =================================================================
   // BLOQUE 1: LÓGICA EXCLUSIVA DE HOJA "CARGAS"
   // =================================================================
-  if (sheetName === HOJA_CARGA_NAME && row >= 4 && row <= 23) {
-    // Módulo A: Monto (col C) → auto-fecha en col G
-    if (col === COL_MONTO_IN) {
+  if (sheetName === HOJA_CARGA_NAME) {
+    // Solo Bloques A y B tienen auto-fecha (col C → col G).
+    // Bloque C: col G es la Fecha Presupuestada MANUAL, no se toca.
+    const enBloqueA = row >= 6  && row <= 25;  // Movimientos
+    const enBloqueB = row >= 31 && row <= 50;  // Compromisos
+
+    if ((enBloqueA || enBloqueB) && col === COL_MONTO_IN) {
       const cellFecha = sheet.getRange(row, COL_FECHA_OUT);
       if (cellFecha.getValue() === "" && range.getValue() !== "") {
         cellFecha.setValue(new Date());
-      }
-      return;
-    }
-    // Módulo B: Monto devengado (col L=12) → auto-fecha registro en col P=16
-    if (col === 12) {
-      const cellFechaReg = sheet.getRange(row, 16); // col P
-      if (cellFechaReg.getValue() === "" && range.getValue() !== "") {
-        cellFechaReg.setValue(new Date());
       }
       return;
     }

@@ -38,3 +38,29 @@ Este documento define la estructura relacional de las hojas de cálculo del proy
 - **AF**: Proyectos Disponibles
 - **AG**: Proyectos - UEN Asociada
 - **AI**: Unidades de Negocio (UEN Maestro)
+
+## Hoja Cargas (Bloques de Carga en Lote)
+**Hoja Exacta**: `Cargas`
+Estructura de 3 bloques independientes, cada uno con encabezado en la primera fila del bloque:
+
+- **Bloque A** `C6:I25` (enc. fila 5) → Movimientos: Monto, Tipo, Cuenta, Medio, Fecha(auto), Nota, ID_Compromiso
+- **Bloque B** `C31:I50` (enc. fila 30) → Compromisos CxP/CxC: Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota
+- **Bloque C** `C56:I75` (enc. fila 55) → Presupuesto: Monto, Cuenta, -, Moneda, FechaCarga(auto), FechaPresupuestada, Nota
+
+## Registros - Presupuesto
+**Hoja Exacta**: `Registros - Presupuesto`
+**Rango de Datos**: `B6:L` (Fila 5 Encabezados, datos desde fila 6, orden Z→A por FechaCarga)
+
+*Columnas Mapeadas*:
+- **B**: Fecha Carga (auto al procesar)
+- **C**: Monto presupuestado
+- **D**: Fecha Presupuestada (período que aplica, manual)
+- **E**: Tipo (Ingreso / Costo / Gasto / Fiscal / Resultado — auto-inferido)
+- **F**: Cuenta (referencia al Plan de Cuentas)
+- **G**: Proyecto Asociado (auto-inferido)
+- **H**: Unidad Asociada (auto-inferida)
+- **I**: Moneda (ARS / USD)
+- **J**: Nota
+- **K**: Cotización USD Venta (API live)
+- **L**: Cotización USD Compra (API live)
+

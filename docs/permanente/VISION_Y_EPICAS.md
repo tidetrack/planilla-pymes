@@ -16,17 +16,16 @@ Se requiere profundizar en cuentas corrientes complejas, medición de liquidez y
 - **Descripción**: Arreglar la situación de cálculo de liquidez actual.
 - **Objetivo**: Implementar un seguimiento preciso de flujos y medios de pago aplicando filtros de tipo de moneda de forma dinámica (ej. ARS vs USD).
 
-### 🔄 Sprint 3: Cuentas por Pagar y Cobrar (CxP / CxC) — EN PROGRESO
+### ✅ Sprint 3: Cuentas por Pagar y Cobrar (CxP / CxC) — COMPLETADO (v1.3.0)
 - **Descripción**: Mapeo estricto de deudas y saldos pendientes.
-- **Objetivo**: Cruces de información de CxP y CxC segmentados por UENS.
+- **Completado**: BD `Registros - Compromisos`, motor devengado, módulo B en Cargas.
 
-### Sprint 4: Cuentas Corrientes de Proveedores
-- **Descripción**: Gestión de saldos vivos de los principales proveedores.
-- **Objetivo**: Visibilidad de asimetrías de caja frente a proveedores estratégicos.
+### ✅ Sprint 4: Cuentas Corrientes de Proveedores — RESUELTO CON SPRINT 3
+- **Nota**: La BD de Compromisos y el glosario de Proveedores/Clientes implementados en Sprint 3 cubren este sprint. El tablero visual se planifica en sprint futuro.
 
-### Sprint 5: Refactorización Hoja PRESUPUESTADO
-- **Descripción**: Arreglar o reestructurar la hoja de PRESUPUESTADO.
-- **Objetivo**: Garantizar que el cruce Real vs Presupuesto ofrezca desviaciones confiables sin quebrar el motor de cálculo.
+### 🔄 Sprint 5: Refactorización Hoja PRESUPUESTADO — EN PROGRESO (v1.4.0)
+- **Descripción**: Reestructuración de la hoja `Cargas` en 3 bloques + BD normalizada `Registros - Presupuesto` + hoja de vista bimonetaria con ventana rodante.
+- **En progreso**: BD y backend de carga completados. Pendiente: hoja de vista `Presupuesto` con fórmulas SUMPRODUCT.
 
 ### Sprint 6: Activos No Corrientes | ESP
 - **Descripción**: Trackear activos fijos de la empresa y flujos no directamente operativos.

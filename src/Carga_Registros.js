@@ -22,9 +22,9 @@ function procesarLoteCargas() {
     return;
   }
 
-  // 1. Leer rango de Cargas C4:I23
-  // [Monto, Tipo, Cuenta, Medio, Fecha, Nota, ID_CXC]
-  const rangoCargas = sheetCargas.getRange(CONFIG.RANGOS.CARGAS_MODULO);
+  // 1. Leer rango de Cargas: Bloque A (C6:I25)
+  // [Monto, Tipo, Cuenta, Medio, Fecha(auto), Nota, ID_CXC]
+  const rangoCargas = sheetCargas.getRange(CONFIG.RANGOS.CARGAS_MOVIMIENTOS);
   const datosCargas = rangoCargas.getValues();
 
   // 2. Extraer mapas en memoria para Triangulación O(1)

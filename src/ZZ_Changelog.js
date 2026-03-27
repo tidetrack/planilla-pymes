@@ -1,4 +1,13 @@
 /**
+ * [2026-03-27] v1.4.0 - Sprint 5 (Módulo Presupuesto + Reestructuración Cargas):
+ * - Nueva BD "Registros - Presupuesto" (cols B-K, con FX live automático).
+ * - 04_Backend_Presupuesto.js: infiere Tipo/Proyecto/UEN, escribe en BD.
+ * - Hoja Cargas reestructurada en 3 bloques: A=Movimientos (C6:I25),
+ *   B=Compromisos (C31:I50), C=Presupuesto (C56:I75).
+ * - TRIGGER_onEdit.js unificado: col C trigger → col G auto-fecha en los 3 bloques.
+ * - 00_Config.js: CARGAS_MOVIMIENTOS, CARGAS_COMPROMISOS, CARGAS_PRESUPUESTO + hoja PRESUPUESTO.
+ *
+ * ---
  * [2026-03-25] v1.3.0 - Sprint 3 (Motor CxP/CxC - Registros Compromisos):
  * - Nueva hoja "Registros - Compromisos" con 16 columnas auto-gestionadas.
  * - 03_Backend_Devengado.js: ID correlativo, FX live, inferencia Proyecto/UEN, fórmulas nativas.
