@@ -70,6 +70,28 @@ Ubicación: `AJ2:AL` (Fila 2 encabezados)
 
 ---
 
+## Hoja de BD | Registros - Movimientos
+
+Libro maestro de movimientos financieros líquidos (caja real). Alimentada mediante `Carga_Registros.js` procesando lotes desde el Bloque A de la hoja **Cargas** (`C6:I25`).
+
+| Col | Campo | Tipo / Origen |
+|---|---|---|
+| B | Fecha | Auto (timestamp o fecha batch) |
+| C | Monto | Manual (col C de Cargas) |
+| D | Tipo | Manual (Ingreso / Egreso, col D de Cargas) |
+| E | Cuenta | Manual (Referencia al Plan de Cuentas, col E) |
+| F | Tipo de Cuenta | Auto-inferido desde el bloque del Plan de Cuentas (`Ingresos / Gastos / etc.`) |
+| G | Proyecto Asociado | Auto-inferido |
+| H | Unidad Asociada | Auto-inferida |
+| I | Medio | Manual (col F de Cargas) |
+| J | Moneda | Auto-inferida |
+| K | Nota | Libre (col H de Cargas) |
+| L | Cotización USD Venta | Auto (API live al procesar) |
+| M | Cotización USD Compra | Auto (API live al procesar) |
+| N | ID Compromiso | Opcional (Vinculación cruzada con CxP/CxC, col I) |
+
+---
+
 ## Hoja de BD | Registros - Compromisos
 
 Libro de compromisos devengados (CxP y CxC). Alimentada automáticamente desde el Módulo B de la hoja **Cargas** (`K4:Q23`).

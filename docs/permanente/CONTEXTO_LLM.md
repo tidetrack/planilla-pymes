@@ -47,6 +47,25 @@ Estructura de 3 bloques independientes, cada uno con encabezado en la primera fi
 - **Bloque B** `C31:I50` (enc. fila 30) → Compromisos CxP/CxC: Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota
 - **Bloque C** `C56:I75` (enc. fila 55) → Presupuesto: Monto, Cuenta, -, Moneda, FechaCarga(auto), FechaPresupuestada, Nota
 
+## Registros - Movimientos
+**Hoja Exacta**: `Registros - Movimientos`
+**Rango de Datos**: `B4:N` (Fila 3 Encabezados, datos desde fila 4, orden Z→A por Fecha)
+
+*Columnas Mapeadas*:
+- **B**: Fecha de Movimiento
+- **C**: Monto
+- **D**: Tipo (Ingreso / Egreso)
+- **E**: Cuenta (Listado Plan de Cuentas)
+- **F**: Tipo de Cuenta (Categoría contable: Ingresos, Gastos, Costos, etc)
+- **G**: Proyecto Asociado (auto-inferido)
+- **H**: UEN Asociada (auto-inferida)
+- **I**: Medio de Pago
+- **J**: Moneda (ARS / USD)
+- **K**: Nota
+- **L**: Cotización Dólar Venta
+- **M**: Cotización Dólar Compra
+- **N**: ID Compromiso (Para imputar vinculaciones con CxP/CxC)
+
 ## Registros - Presupuesto
 **Hoja Exacta**: `Registros - Presupuesto`
 **Rango de Datos**: `B6:L` (Fila 5 Encabezados, datos desde fila 6, orden Z→A por FechaCarga)
