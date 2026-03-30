@@ -124,6 +124,21 @@ function getCategoryAccounts(entityType) {
 function saveAbmRecord(payload) {
   const { entityType, nombre, uenRelacionada, proyectoRelacionado, monedaRelacionada } = payload;
   if (!nombre) throw new Error("Debe proveer un nombre para la cuenta.");
+
+  const PREFIX_MAP = {
+    "INGRESOS": "Ingreso-",
+    "COSTOS": "Costo-",
+    "GASTOS": "Gasto-",
+    "FISCAL": "CargaF-",
+    "RESULTADOS": "Resultado-"
+  };
+  
+  let finalName = nombre.trim();
+  const prefijo = PREFIX_MAP[entityType];
+  if (prefijo && !finalName.startsWith(prefijo)) {
+    finalName = prefijo + finalName;
+  }
+
   if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para dar de alta un Proyecto.");
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.HOJAS.PLAN_CUENTAS);
@@ -140,7 +155,7 @@ function saveAbmRecord(payload) {
   }
 
   // Insertar según bloque
-  sheet.getRange(insertRow, bloque.colStart).setValue(nombre.trim());
+  sheet.getRange(insertRow, bloque.colStart).setValue(finalName);
 
   if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
@@ -154,7 +169,7 @@ function saveAbmRecord(payload) {
     sheet.getRange(insertRow, bloque.colStart + 1).setValue(proyectoRelacionado || "");
   }
 
-  return { nombre: nombre };
+  return { nombre: finalName };
 }
 
 /**
@@ -163,12 +178,27 @@ function saveAbmRecord(payload) {
 function updateAbmRecord(payload) {
   const { entityType, rowIndex, nombre, uenRelacionada, proyectoRelacionado, monedaRelacionada } = payload;
   if (!nombre) throw new Error("Debe proveer un nombre.");
+
+  const PREFIX_MAP = {
+    "INGRESOS": "Ingreso-",
+    "COSTOS": "Costo-",
+    "GASTOS": "Gasto-",
+    "FISCAL": "CargaF-",
+    "RESULTADOS": "Resultado-"
+  };
+  
+  let finalName = nombre.trim();
+  const prefijo = PREFIX_MAP[entityType];
+  if (prefijo && !finalName.startsWith(prefijo)) {
+    finalName = prefijo + finalName;
+  }
+
   if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para modificar un Proyecto.");
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.HOJAS.PLAN_CUENTAS);
   const bloque = CONFIG.PLAN_CUENTAS.BLOQUES[entityType];
 
-  sheet.getRange(rowIndex, bloque.colStart).setValue(nombre.trim());
+  sheet.getRange(rowIndex, bloque.colStart).setValue(finalName);
 
   if (entityType === "MEDIOS_PAGO") {
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(monedaRelacionada || "ARS");
@@ -182,7 +212,7 @@ function updateAbmRecord(payload) {
     sheet.getRange(rowIndex, bloque.colStart + 1).setValue(proyectoRelacionado || "");
   }
 
-  return { nombre: nombre };
+  return { nombre: finalName };
 }
 
 /**
