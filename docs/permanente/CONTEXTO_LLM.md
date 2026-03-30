@@ -43,7 +43,7 @@ Este documento define la estructura relacional de las hojas de cálculo del proy
 Estructura de 3 bloques independientes, cada uno con encabezado en la primera fila del bloque:
 
 - **Bloque A** `C6:I25` (enc. fila 5) → Movimientos: Monto, Tipo, Cuenta, Medio, Fecha(auto), Nota, ID_Compromiso
-- **Bloque B** `C31:I50` (enc. fila 30) → Compromisos CxP/CxC: Monto, Tipo, Contraparte, Cuenta, FechaReg(auto), FechaCompromiso, Nota
+- **Bloque B** `C31:I50` (enc. fila 30) → Compromisos CxP/CxC: Monto, Tipo, Contraparte, Cuenta, Moneda, FechaCompromiso, Nota
 - **Bloque C** `C56:I75` (enc. fila 55) → Presupuesto: Monto, Cuenta, -, Moneda, FechaCarga(auto), FechaPresupuestada, Nota
 
 ## Registros - Movimientos
