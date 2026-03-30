@@ -25,6 +25,8 @@ function onOpen(e) {
     .addSeparator()
     .addItem('🔄 Forzar Carga Histórica USD (Desde 2026)', 'forzarCargaHistoricaUSD')
     .addSeparator()
+    .addItem('🧪 QA Test: Generar Lotes Aleatorios', 'generarLotesDePrueba')
+    .addSeparator()
     .addItem('📄 Contrato Tidetrack', 'mostrarLinkContrato')
     .addToUi();
 
