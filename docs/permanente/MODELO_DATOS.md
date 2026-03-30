@@ -101,18 +101,19 @@ Libro de compromisos devengados (CxP y CxC). Alimentada automáticamente desde e
 | C | Fecha Registro | Auto (fecha de procesamiento) |
 | D | Fecha Compromiso | Manual (col P de Cargas) |
 | E | Monto Comprometido | Manual (col K de Cargas) |
-| F | Total Imputado | Fórmula: `SUMIF` sobre `Registros col M` |
-| G | Saldo | Fórmula: `E - F` |
-| H | Fecha Último Pago | Fórmula: `MAXIFS` sobre `Registros` por ID |
-| I | Estado | Fórmula: `Pendiente / Parcial / Cancelado` |
-| J | Tipo | `Por Cobrar` / `Por Pagar` (col L de Cargas) |
-| K | Cliente / Proveedor | Glosario (col M de Cargas) |
-| L | Cuenta | Plan de Cuentas (col N de Cargas) |
-| M | Proyecto Asociado | Auto-inferido desde la Cuenta |
-| N | UEN Asociada | Auto-inferida desde el Proyecto |
-| O | Cotización USD Venta | Auto (API live al procesar) |
-| P | Cotización USD Compra | Auto (API live al procesar) |
-| Q | Nota | Libre (col Q de Cargas) |
+| F | Moneda | Manual (`ARS` / `USD`, col O de Cargas) |
+| G | Total Imputado | Fórmula Bimonetaria O(1): `SUM(FILTER... ARS + USD convertido)` |
+| H | Saldo | Fórmula: `E - G` |
+| I | Fecha Último Pago | Fórmula: `MAXIFS` sobre `Registros` por ID |
+| J | Estado | Fórmula: `Pendiente / Parcial / Cancelado` |
+| K | Tipo | `Por Cobrar` / `Por Pagar` (col L de Cargas) |
+| L | Cliente / Proveedor | Glosario (col M de Cargas) |
+| M | Cuenta | Plan de Cuentas (col N de Cargas) |
+| N | Proyecto Asociado | Auto-inferido desde Cuenta |
+| O | UEN Asociada | Auto-inferido desde Proyecto |
+| P | Cotización USD Venta | Auto (API live al procesar) |
+| Q | Cotización USD Compra | Auto (API live al procesar) |
+| R | Nota | Libre (col Q de Cargas) |
 
 ---
 > **Nota de Arquitectura**: Registrar todo lo que ocurre basándose en este Plan de Cuentas es la regla única para permitir distintas visiones, análisis e interpretaciones (Flujos de fondos).

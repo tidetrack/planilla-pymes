@@ -97,7 +97,7 @@ function generarLotesDePrueba() {
         tipoComp,
         contraparte,
         cuentaComp,
-        new Date(), // Registrado hoy
+        Math.random() > 0.5 ? "ARS" : "USD", // Moneda reemplaza a la vieja FechaReg
         randFechaMes(), // Vencimiento / Compromiso
         "QA Auto-Comp"
       ]);

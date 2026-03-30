@@ -97,8 +97,8 @@ function procesarLoteDevengado() {
   const nuevasFilas = [];
 
   for (let i = 0; i < datosDevengado.length; i++) {
-    // [K=Monto, L=Tipo, M=Contraparte, N=Cuenta, O=FechaReg(auto), P=FechaCompromiso, Q=Nota]
-    const [monto, tipo, contraparte, cuenta, , fechaCompromiso, nota] = datosDevengado[i];
+    // [K=Monto, L=Tipo, M=Contraparte, N=Cuenta, O=Moneda, P=FechaCompromiso, Q=Nota]
+    const [monto, tipo, contraparte, cuenta, monedaCarga, fechaCompromiso, nota] = datosDevengado[i];
 
     if (!monto || monto === "" || !tipo || tipo === "") continue;
 
@@ -110,24 +110,25 @@ function procesarLoteDevengado() {
 
     const id = _generarIdDevengado(tipo.toString().trim(), sheetCompromisos);
 
-    // Fila a insertar en Registros - Compromisos (cols B a Q)
+    // Fila a insertar en Registros - Compromisos (cols B a R)
     nuevasFilas.push([
       id,                              // B: ID
       new Date(),                      // C: Fecha Registro (hoy)
       fechaCompromiso || "",           // D: Fecha Compromiso
       monto,                           // E: Monto Comprometido
-      null,                            // F: Total Imputado (fórmula se inyecta después)
-      null,                            // G: Saldo (fórmula)
-      null,                            // H: Fecha Último Pago (fórmula)
-      null,                            // I: Estado (fórmula)
-      tipo,                            // J: Tipo
-      contrapTrim,                     // K: Cliente / Proveedor
-      cuentaTrim,                      // L: Cuenta
-      proyecto,                        // M: Proyecto Asociado
-      uen,                             // N: UEN Asociada
-      usdVenta,                        // O: Cotización USD Venta
-      usdCompra,                       // P: Cotización USD Compra
-      nota || ""                       // Q: Nota
+      monedaCarga || "ARS",            // F: Moneda
+      null,                            // G: Total Imputado (fórmula se inyecta después)
+      null,                            // H: Saldo (fórmula)
+      null,                            // I: Fecha Último Pago (fórmula)
+      null,                            // J: Estado (fórmula)
+      tipo,                            // K: Tipo
+      contrapTrim,                     // L: Cliente / Proveedor
+      cuentaTrim,                      // M: Cuenta
+      proyecto,                        // N: Proyecto Asociado
+      uen,                             // O: UEN Asociada
+      usdVenta,                        // P: Cotización USD Venta
+      usdCompra,                       // Q: Cotización USD Compra
+      nota || ""                       // R: Nota
     ]);
   }
 
@@ -139,21 +140,24 @@ function procesarLoteDevengado() {
   // 6. Insertar filas en "Registros - Compromisos" y luego inyectar fórmulas
   const insertRow = 4;
   sheetCompromisos.insertRowsBefore(insertRow, nuevasFilas.length);
-  sheetCompromisos.getRange(insertRow, 2, nuevasFilas.length, 16).setValues(nuevasFilas);
+  sheetCompromisos.getRange(insertRow, 2, nuevasFilas.length, 17).setValues(nuevasFilas);
 
   // Copiar formato desde la antigua primera fila de datos (ahora desplazada)
   const filaFormatoOrigen  = sheetCompromisos.getRange(insertRow + nuevasFilas.length, 1, 1, sheetCompromisos.getMaxColumns());
   const filaFormatoDestino = sheetCompromisos.getRange(insertRow, 1, nuevasFilas.length, sheetCompromisos.getMaxColumns());
   filaFormatoOrigen.copyTo(filaFormatoDestino, SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
 
-  // 7. Inyectar fórmulas calculadas (F, G, H, I) — setFormula() SIEMPRE requiere nombres en inglés
+  // 7. Inyectar fórmulas calculadas (G, H, I, J) — setFormula() SIEMPRE requiere nombres en inglés
   for (let r = 0; r < nuevasFilas.length; r++) {
     const fila  = insertRow + r;
     const idRef = `B${fila}`;
-    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMIF('Registros - Movimientos'!N:N,${idRef},'Registros - Movimientos'!C:C)`);            // F: Total Imputado
-    sheetCompromisos.getRange(fila, 7).setFormula(`=E${fila}-F${fila}`);                                                                      // G: Saldo
-    sheetCompromisos.getRange(fila, 8).setFormula(`=IFERROR(IF(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})=0,"",MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})),"")`); //H: Fecha Último Pago
-    sheetCompromisos.getRange(fila, 9).setFormula(`=IF(G${fila}<=0,"Cancelado",IF(F${fila}>0,"Parcial","Pendiente"))`);                       // I: Estado
+    
+    const fTotalImputado = `=IF(F${fila}="USD", IFERROR(SUM(FILTER('Registros - Movimientos'!C:C, 'Registros - Movimientos'!N:N=${idRef}, 'Registros - Movimientos'!J:J="USD")), 0) + IFERROR(SUM(FILTER('Registros - Movimientos'!C:C / 'Registros - Movimientos'!L:L, 'Registros - Movimientos'!N:N=${idRef}, 'Registros - Movimientos'!J:J="ARS")), 0), IFERROR(SUM(FILTER('Registros - Movimientos'!C:C, 'Registros - Movimientos'!N:N=${idRef}, 'Registros - Movimientos'!J:J="ARS")), 0) + IFERROR(SUM(FILTER('Registros - Movimientos'!C:C * 'Registros - Movimientos'!L:L, 'Registros - Movimientos'!N:N=${idRef}, 'Registros - Movimientos'!J:J="USD")), 0))`;
+    
+    sheetCompromisos.getRange(fila, 7).setFormula(fTotalImputado);                                                                            // G: Total Imputado
+    sheetCompromisos.getRange(fila, 8).setFormula(`=E${fila}-G${fila}`);                                                                      // H: Saldo
+    sheetCompromisos.getRange(fila, 9).setFormula(`=IFERROR(IF(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})=0,"",MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})),"")`); //I: Fecha Último Pago
+    sheetCompromisos.getRange(fila, 10).setFormula(`=IF(H${fila}<=0,"Cancelado",IF(G${fila}>0,"Parcial","Pendiente"))`);                      // J: Estado
   }
 
   // 8. Limpiar el Bloque B en Cargas
