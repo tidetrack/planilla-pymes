@@ -26,5 +26,8 @@ El desarrollo del proyecto es asistido por un comité de Agentes Autónomos. Su 
 - **`@github-docs`**: Quien mantiene el orden en este mismísimo texto.
 - **`@agente-contextual`**: El obsesivo bibliotecario que vigila que no se corrompan los flujos y mantiene las Actas de Decisiones.
 
+### 5. Documentación de Módulos (Nuevos)
+- [Módulo: Presupuesto e Interanual](./MODULO_PRESUPUESTO.md): Arquitectura paramétrica nativa (Sheets) de tablas pivote y sistema de conversión multidivisa integrado.
+
 ---
 > ⚠️ **Regla de Oro para Colaboradores**: Todo cambio estructural debe pasar por un comité (vía issue o pull request). Modificar nombres de hojas, mover columnas o agregar campos a validadores cerrados quebrarán las macros indexadas en Apps Script. Revisa siempre la validación contra `00_Config.js`.
