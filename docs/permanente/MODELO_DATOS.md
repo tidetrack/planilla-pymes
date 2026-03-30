@@ -33,20 +33,19 @@ Ubicación: `Q2:T` (Fila 2 encabezados)
 - **Columna T**: Fecha de Vencimiento para cobro
 
 ### 5. Movimientos
-Ubicación: `V2:V` (Fila 2 encabezados)
+Ubicación: `R2:R` (Fila 2 encabezados)
 - Sirven para registrar movimientos internos y permutativos, y para conciliar cuentas bancarias.
 
 ### 6. Resultados
-Ubicación: `X2:Y` (Fila 2 encabezados)
-- **Columna X**: Nombre de la cuenta
-- **Columna Y**: UEN Asociada
+Ubicación: `T2:T` (Fila 2 encabezados)
+- **Columna T**: Nombre de la cuenta
+- **Columna U**: Proyecto Asociado
 
 ### 7. Medios de Pago
-Ubicación: `AA2:AD` (Fila 2 encabezados)
-- **Columna AA**: Nombre de la Cuenta
-- **Columna AB**: Moneda
-- **Columna AC**: Proyecto Asociado
-- **Columna AD**: UEN asociada
+Ubicación: `W2:Y` (Fila 2 encabezados)
+- **Columna W**: Nombre de la Cuenta
+- **Columna X**: Moneda
+- **Columna Y**: Proyecto Asociado
 
 ### 8. Proyectos
 Ubicación: `AF2:AF` (Fila 2 encabezados)

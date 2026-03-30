@@ -28,16 +28,15 @@ Este documento define la estructura relacional de las hojas de cálculo del proy
 - **R**: Carga Fiscal - Proyecto Asociado
 - **S**: Carga Fiscal - UEN Asociada
 - **T**: Carga Fiscal - Fecha Vencimiento
-- **V**: Movimientos - Nombre
-- **X**: Resultados - Nombre
-- **Y**: Resultados - UEN Asociada
-- **AA**: Medios de Pago - Nombre
-- **AB**: Medios de Pago - Moneda
-- **AC**: Medios de Pago - Proyecto Asociado
-- **AD**: Medios de Pago - UEN Asociada
-- **AF**: Proyectos Disponibles
-- **AG**: Proyectos - UEN Asociada
-- **AI**: Unidades de Negocio (UEN Maestro)
+- **R**: Movimientos - Nombre
+- **T**: Resultados - Nombre
+- **U**: Resultados - Proyecto Asociado
+- **W**: Medios de Pago - Nombre
+- **X**: Medios de Pago - Moneda
+- **Y**: Medios de Pago - Proyecto Asociado
+- **AA**: Proyectos Disponibles
+- **AB**: Proyectos - UEN Asociada
+- **AD**: Unidades de Negocio (UEN Maestro)
 
 ## Hoja Cargas (Bloques de Carga en Lote)
 **Hoja Exacta**: `Cargas`
