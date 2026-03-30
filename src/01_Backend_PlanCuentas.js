@@ -75,7 +75,7 @@ function getAbmFormData() {
   return { 
     proyectos: proyectosUnicos,
     uens: uenUnicas,
-    monedas: ["ARS", "USD", "EUR"] 
+    monedas: ["ARS", "USD", "CtaCte"] 
   };
 }
 
@@ -136,9 +136,17 @@ function saveAbmRecord(payload) {
   };
   
   let finalName = nombre.trim();
-  const prefijo = PREFIX_MAP[entityType];
-  if (prefijo && !finalName.startsWith(prefijo)) {
-    finalName = prefijo + finalName;
+  
+  if (entityType === "MEDIOS_PAGO" && monedaRelacionada) {
+    const prefijoMedio = monedaRelacionada + "-";
+    if (!finalName.startsWith(prefijoMedio)) {
+      finalName = prefijoMedio + finalName;
+    }
+  } else {
+    const prefijo = PREFIX_MAP[entityType];
+    if (prefijo && !finalName.startsWith(prefijo)) {
+      finalName = prefijo + finalName;
+    }
   }
 
   if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para dar de alta un Proyecto.");
@@ -190,9 +198,17 @@ function updateAbmRecord(payload) {
   };
   
   let finalName = nombre.trim();
-  const prefijo = PREFIX_MAP[entityType];
-  if (prefijo && !finalName.startsWith(prefijo)) {
-    finalName = prefijo + finalName;
+  
+  if (entityType === "MEDIOS_PAGO" && monedaRelacionada) {
+    const prefijoMedio = monedaRelacionada + "-";
+    if (!finalName.startsWith(prefijoMedio)) {
+      finalName = prefijoMedio + finalName;
+    }
+  } else {
+    const prefijo = PREFIX_MAP[entityType];
+    if (prefijo && !finalName.startsWith(prefijo)) {
+      finalName = prefijo + finalName;
+    }
   }
 
   if (entityType === "PROYECTOS" && !uenRelacionada) throw new Error("La UEN es obligatoria para modificar un Proyecto.");
