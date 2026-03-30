@@ -13,18 +13,24 @@
 /**
  * Genera un ID único correlativo para el compromiso.
  * Formato: CXC-YYYYMMDD-NNN o CXP-YYYYMMDD-NNN
+ * Suma los existentes en Sheets más los procesados en memoria (lote actual).
  */
-function _generarIdDevengado(tipo, sheet) {
+function _generarIdDevengado(tipo, sheet, memoriaLocalLocalIds = []) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const hoy = Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), "yyyyMMdd");
   const prefijo = tipo === "Por Cobrar" ? "CXC" : "CXP";
   const base = `${prefijo}-${hoy}-`;
 
+  let countInSheet = 0;
   const lastRow = sheet.getLastRow();
-  if (lastRow < 4) return `${base}001`;
+  if (lastRow >= 4) {
+    const ids = sheet.getRange(4, 2, lastRow - 3, 1).getValues().flat().filter(id => id && id.toString().startsWith(base));
+    countInSheet = ids.length;
+  }
 
-  const ids = sheet.getRange(4, 2, lastRow - 3, 1).getValues().flat().filter(id => id && id.toString().startsWith(base));
-  const siguiente = ids.length + 1;
+  const countInMemoria = memoriaLocalLocalIds.filter(id => id.startsWith(base)).length;
+
+  const siguiente = countInSheet + countInMemoria + 1;
   return `${base}${String(siguiente).padStart(3, "0")}`;
 }
 
@@ -95,6 +101,7 @@ function procesarLoteDevengado() {
 
   // 5. Procesar filas de Devengado
   const nuevasFilas = [];
+  const generadosEnLote = [];
 
   for (let i = 0; i < datosDevengado.length; i++) {
     // [K=Monto, L=Tipo, M=Contraparte, N=Cuenta, O=Moneda, P=FechaCompromiso, Q=Nota]
@@ -108,7 +115,8 @@ function procesarLoteDevengado() {
     const proyecto = mapCuentaProyecto[cuentaTrim] || "";
     const uen = mapProyectoUEN[proyecto.toString().trim()] || "";
 
-    const id = _generarIdDevengado(tipo.toString().trim(), sheetCompromisos);
+    const id = _generarIdDevengado(tipo.toString().trim(), sheetCompromisos, generadosEnLote);
+    generadosEnLote.push(id);
 
     // Fila a insertar en Registros - Compromisos (cols B a R)
     nuevasFilas.push([
