@@ -150,9 +150,9 @@ function procesarLoteDevengado() {
   for (let r = 0; r < nuevasFilas.length; r++) {
     const fila  = insertRow + r;
     const idRef = `B${fila}`;
-    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMIF('Registros - Movimientos'!M:M,${idRef},'Registros - Movimientos'!C:C)`);            // F: Total Imputado
+    sheetCompromisos.getRange(fila, 6).setFormula(`=SUMIF('Registros - Movimientos'!N:N,${idRef},'Registros - Movimientos'!C:C)`);            // F: Total Imputado
     sheetCompromisos.getRange(fila, 7).setFormula(`=E${fila}-F${fila}`);                                                                      // G: Saldo
-    sheetCompromisos.getRange(fila, 8).setFormula(`=IFERROR(IF(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef})=0,"",MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!M:M,${idRef})),"")`); //H: Fecha Último Pago
+    sheetCompromisos.getRange(fila, 8).setFormula(`=IFERROR(IF(MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})=0,"",MAXIFS('Registros - Movimientos'!B:B,'Registros - Movimientos'!N:N,${idRef})),"")`); //H: Fecha Último Pago
     sheetCompromisos.getRange(fila, 9).setFormula(`=IF(G${fila}<=0,"Cancelado",IF(F${fila}>0,"Parcial","Pendiente"))`);                       // I: Estado
   }
 

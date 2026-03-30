@@ -1,4 +1,12 @@
 /**
+ * [2026-03-30] v1.5.0 - Sprint 6 (Refactor Tipo de Cuenta & Resumen Interanual):
+ * - Nueva dimension "Tipo de cuenta" inyectada en Registros - Movimientos (Columna F).
+ * - Carga_Registros modificado para inferencia O(1) de Bloques de Config hacia Tipo de Cuenta (Ingresos, Gastos, etc).
+ * - 03_Backend_Devengado.js adaptado apuntando SUMIF a columna N (por desplazamiento de ID_CXC).
+ * - 01_Backend_PlanCuentas.js: DevTools Scanner expuesto en UI global (onOpen).
+ * - Escaneo de arquitectura actualizado detectando "Resumen Interanual" validado.
+ *
+ * ---
  * [2026-03-27] v1.4.0 - Sprint 5 (Módulo Presupuesto + Reestructuración Cargas):
  * - Nueva BD "Registros - Presupuesto" (cols B-K, con FX live automático).
  * - 04_Backend_Presupuesto.js: infiere Tipo/Proyecto/UEN, escribe en BD.

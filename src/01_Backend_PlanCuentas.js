@@ -27,6 +27,11 @@ function onOpen(e) {
     .addSeparator()
     .addItem('📄 Contrato Tidetrack', 'mostrarLinkContrato')
     .addToUi();
+
+  // Inicializar DevTools para acceso al AI-Scanner
+  if (typeof enrutarMenuDevtools === 'function') {
+    enrutarMenuDevtools();
+  }
 }
 
 function abrirAbmPlanCuentas() {

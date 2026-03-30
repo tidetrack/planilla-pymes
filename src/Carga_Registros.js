@@ -29,8 +29,9 @@ function procesarLoteCargas() {
 
   // 2. Extraer mapas en memoria para Triangulación O(1)
   
-  // A. Mapa de Cuentas a Proyecto (Buscamos en Ingresos, Costos, Gastos, Fiscal, Resultados)
+  // A. Mapa de Cuentas a Proyecto y Tipo (Buscamos en Ingresos, Costos, Gastos, Fiscal, Resultados)
   const mapCuentaProyecto = {};
+  const mapCuentaTipo = {};
   const datosPC = sheetPlanCuentas.getRange("B3:Y").getValues();
   // Columnas relativas en B3:Y (0-indexed donde B=0):
   // B(0)-C(1) Ingresos
@@ -40,11 +41,11 @@ function procesarLoteCargas() {
   // T(18)-U(19) Resultados
   for (let r = 0; r < datosPC.length; r++) {
     const row = datosPC[r];
-    if (row[0])  mapCuentaProyecto[row[0].toString().trim()]  = row[1];  // Ingresos
-    if (row[4])  mapCuentaProyecto[row[4].toString().trim()]  = row[5];  // Costos
-    if (row[8])  mapCuentaProyecto[row[8].toString().trim()]  = row[9];  // Gastos
-    if (row[12]) mapCuentaProyecto[row[12].toString().trim()] = row[13]; // Fiscal
-    if (row[18]) mapCuentaProyecto[row[18].toString().trim()] = row[19]; // Resultados
+    if (row[0])  { mapCuentaProyecto[row[0].toString().trim()]  = row[1];  mapCuentaTipo[row[0].toString().trim()] = "Ingresos"; }
+    if (row[4])  { mapCuentaProyecto[row[4].toString().trim()]  = row[5];  mapCuentaTipo[row[4].toString().trim()] = "Costos de Venta"; }
+    if (row[8])  { mapCuentaProyecto[row[8].toString().trim()]  = row[9];  mapCuentaTipo[row[8].toString().trim()] = "Gastos"; }
+    if (row[12]) { mapCuentaProyecto[row[12].toString().trim()] = row[13]; mapCuentaTipo[row[12].toString().trim()] = "Carga Fiscal"; }
+    if (row[18]) { mapCuentaProyecto[row[18].toString().trim()] = row[19]; mapCuentaTipo[row[18].toString().trim()] = "Resultados"; }
   }
 
   // B. Mapa de Proyecto a UEN (AA3:AB)
@@ -100,6 +101,7 @@ function procesarLoteCargas() {
     
     // Extracción de datos cruzados
     const proyectoCuenta = mapCuentaProyecto[cuentaTrim] || "";
+    const tipoDeCuenta   = mapCuentaTipo[cuentaTrim] || "";
     const proyectoMedio = mapMedioProyecto[medioTrim] || "";
     // Prioriza el proyecto de la Cuenta, pero si no tiene y el Medio sí (ej. caja chica obra), lo usa.
     const proyectoAsociado = proyectoCuenta || proyectoMedio || "";
@@ -160,13 +162,14 @@ function procesarLoteCargas() {
       }
     }
 
-    // Armar fila para "Registros" (Orden B a M)
-    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Proyecto(F), UEN(G), Medio(H), Moneda(I), Nota(J), CotizaciónVenta(K), CotizaciónCompra(L), ID_CXC(M)]
+    // Armar fila para "Registros" (Orden B a N)
+    // [Fecha(B), Monto(C), Tipo(D), Cuenta(E), Tipo de cuenta(F), Proyecto(G), UEN(H), Medio(I), Moneda(J), Nota(K), CotizaciónVenta(L), CotizaciónCompra(M), ID_CXC(N)]
     nuevasFilas.push([
       fechaObj,
       monto,
       tipo,
       cuentaTrim,
+      tipoDeCuenta,
       proyectoAsociado,
       unidadAsociada,
       medioTrim,
@@ -174,7 +177,7 @@ function procesarLoteCargas() {
       nota,
       cotizacionDolar,
       cotizacionDolarCompra,
-      idCxc ? idCxc.toString().trim() : ""  // M: ID_CXC para imputar contra devengado
+      idCxc ? idCxc.toString().trim() : ""  // N: ID_CXC para imputar contra devengado
     ]);
   }
 
@@ -193,7 +196,7 @@ function procesarLoteCargas() {
   // 4. Escribir en 'Registros - Movimientos' (Fila 4 hacia abajo, debajo de los encabezados)
   const insertStartRow = 4;
   sheetRegistros.insertRowsBefore(insertStartRow, nuevasFilas.length);
-  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 12).setValues(nuevasFilas);
+  sheetRegistros.getRange(insertStartRow, 2, nuevasFilas.length, 13).setValues(nuevasFilas);
 
   // Copiar formato desde la fila de datos inmediatamente inferior (la antigua fila 4 desplazada)
   // para heredar correctamente formatos de moneda, fechas y colores sin arrastrar el fondo del encabezado.
@@ -204,7 +207,7 @@ function procesarLoteCargas() {
   // Ordenamos si existen datos previos
   const numRowsTotal = sheetRegistros.getLastRow() - insertStartRow + 1;
   if (numRowsTotal > 0) {
-    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 12);
+    const fullRange = sheetRegistros.getRange(insertStartRow, 2, numRowsTotal, 13);
     fullRange.sort({column: 2, ascending: false});
   }
 

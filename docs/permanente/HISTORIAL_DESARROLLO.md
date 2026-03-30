@@ -3,6 +3,22 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
+## 2026-03-30 - Sprint 6: Refactor Tipo de Cuenta & Resumen Interanual (v1.5.0)
+
+### Evento
+El usuario detectó la necesidad de poder clasificar los movimientos en "Ingresos", "Costos", "Gastos", etc. en la base troncal (`Registros - Movimientos`) para nutrir correctamente la nueva capa analítica "Resumen Interanual".
+
+### Cambios Implementados
+- **Escaneo JSON**: Se activó el DevTools en `onOpen` (`01_Backend_PlanCuentas.js`). El usuario exportó el JSON, validando que el Resumen Interanual sea pariente paramétrico de Presupuesto sin depender de Google Apps Script.
+- **Inferencia de Tipo de Cuenta**: `Carga_Registros.js` ahora mapea (`mapCuentaTipo`) paralelamente cada cuenta con su designación macro según el bloque al que pertenece (`Ingresos`, `Costos`, `Gastos`, etc).
+- **Columna Desplazada**: Se amplió el ancho de escritura interponiendo el dato en F, empujando todas las variables para no sobrescribir, desde G hasta M.
+- **Fix Devengado**: Se actualizó la fórmula `SUMIF/MAXIFS` en `03_Backend_Devengado.js` para mirar la Columna N (`N:N`), dado que la columna `ID_CXC` había sido desplazada.
+
+### Resultado
+- "Registros - Movimientos" ahora posee automáticamente la macrocategoría financiera de la transacción.
+- Contamos con un JSON actualizado y escaneado para la IA en `TIDETRACK_ARQUITECTURA_ESTRICTA.json`.
+
+---
 ## 2026-03-27 - Sprint 5: Módulo Presupuesto + Reestructuración Cargas (v1.4.0)
 
 ### Evento
