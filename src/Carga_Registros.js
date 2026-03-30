@@ -47,7 +47,7 @@ function procesarLoteCargas() {
     if (row[8])  { mapCuentaProyecto[row[8].toString().trim()]  = row[9];  mapCuentaTipo[row[8].toString().trim()] = "Gastos"; }
     if (row[12]) { mapCuentaProyecto[row[12].toString().trim()] = row[13]; mapCuentaTipo[row[12].toString().trim()] = "Carga Fiscal"; }
     if (row[18]) { mapCuentaProyecto[row[18].toString().trim()] = row[19]; mapCuentaTipo[row[18].toString().trim()] = "Resultados"; }
-    if (row[20]) { mapCuentaTipo[row[20].toString().trim()] = "Movimientos"; }
+    if (row[16]) { mapCuentaTipo[row[16].toString().trim()] = "Movimientos"; }
   }
 
   // B. Mapa de Proyecto a UEN (AA3:AB)

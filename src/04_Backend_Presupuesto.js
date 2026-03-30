@@ -51,7 +51,7 @@ function procesarLotePresupuesto() {
     if (row[8])  { mapCuentaTipo[row[8].toString().trim()] = "Gastos";              mapCuentaProyecto[row[8].toString().trim()]  = row[9]; }
     if (row[12]) { mapCuentaTipo[row[12].toString().trim()] = "Carga Fiscal";       mapCuentaProyecto[row[12].toString().trim()] = row[13]; }
     if (row[18]) { mapCuentaTipo[row[18].toString().trim()] = "Resultados";         mapCuentaProyecto[row[18].toString().trim()] = row[19]; }
-    if (row[20]) { mapCuentaTipo[row[20].toString().trim()] = "Movimientos"; }
+    if (row[16]) { mapCuentaTipo[row[16].toString().trim()] = "Movimientos"; }
   }
 
   // 3. Mapa Proyecto → UEN (AA:AB)
