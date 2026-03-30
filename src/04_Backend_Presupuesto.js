@@ -46,11 +46,12 @@ function procesarLotePresupuesto() {
   const datosPC = sheetPlanCuentas.getRange("B3:Y").getValues();
   for (let r = 0; r < datosPC.length; r++) {
     const row = datosPC[r];
-    if (row[0])  { mapCuentaTipo[row[0].toString().trim()] = "Ingreso";    mapCuentaProyecto[row[0].toString().trim()]  = row[1]; }
-    if (row[4])  { mapCuentaTipo[row[4].toString().trim()] = "Costo";      mapCuentaProyecto[row[4].toString().trim()]  = row[5]; }
-    if (row[8])  { mapCuentaTipo[row[8].toString().trim()] = "Gasto";      mapCuentaProyecto[row[8].toString().trim()]  = row[9]; }
-    if (row[12]) { mapCuentaTipo[row[12].toString().trim()] = "Fiscal";    mapCuentaProyecto[row[12].toString().trim()] = row[13]; }
-    if (row[18]) { mapCuentaTipo[row[18].toString().trim()] = "Resultado"; mapCuentaProyecto[row[18].toString().trim()] = row[19]; }
+    if (row[0])  { mapCuentaTipo[row[0].toString().trim()] = "Ingresos y Recursos"; mapCuentaProyecto[row[0].toString().trim()]  = row[1]; }
+    if (row[4])  { mapCuentaTipo[row[4].toString().trim()] = "Costos de Ventas";    mapCuentaProyecto[row[4].toString().trim()]  = row[5]; }
+    if (row[8])  { mapCuentaTipo[row[8].toString().trim()] = "Gastos";              mapCuentaProyecto[row[8].toString().trim()]  = row[9]; }
+    if (row[12]) { mapCuentaTipo[row[12].toString().trim()] = "Carga Fiscal";       mapCuentaProyecto[row[12].toString().trim()] = row[13]; }
+    if (row[18]) { mapCuentaTipo[row[18].toString().trim()] = "Resultados";         mapCuentaProyecto[row[18].toString().trim()] = row[19]; }
+    if (row[20]) { mapCuentaTipo[row[20].toString().trim()] = "Movimientos"; }
   }
 
   // 3. Mapa Proyecto → UEN (AA:AB)

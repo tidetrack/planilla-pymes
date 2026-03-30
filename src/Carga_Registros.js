@@ -39,13 +39,15 @@ function procesarLoteCargas() {
   // J(8)-K(9) Gastos
   // N(12)-O(13) Fiscal
   // T(18)-U(19) Resultados
+  // V(20) Movimientos
   for (let r = 0; r < datosPC.length; r++) {
     const row = datosPC[r];
-    if (row[0])  { mapCuentaProyecto[row[0].toString().trim()]  = row[1];  mapCuentaTipo[row[0].toString().trim()] = "Ingresos"; }
-    if (row[4])  { mapCuentaProyecto[row[4].toString().trim()]  = row[5];  mapCuentaTipo[row[4].toString().trim()] = "Costos de Venta"; }
+    if (row[0])  { mapCuentaProyecto[row[0].toString().trim()]  = row[1];  mapCuentaTipo[row[0].toString().trim()] = "Ingresos y Recursos"; }
+    if (row[4])  { mapCuentaProyecto[row[4].toString().trim()]  = row[5];  mapCuentaTipo[row[4].toString().trim()] = "Costos de Ventas"; }
     if (row[8])  { mapCuentaProyecto[row[8].toString().trim()]  = row[9];  mapCuentaTipo[row[8].toString().trim()] = "Gastos"; }
     if (row[12]) { mapCuentaProyecto[row[12].toString().trim()] = row[13]; mapCuentaTipo[row[12].toString().trim()] = "Carga Fiscal"; }
     if (row[18]) { mapCuentaProyecto[row[18].toString().trim()] = row[19]; mapCuentaTipo[row[18].toString().trim()] = "Resultados"; }
+    if (row[20]) { mapCuentaTipo[row[20].toString().trim()] = "Movimientos"; }
   }
 
   // B. Mapa de Proyecto a UEN (AA3:AB)
