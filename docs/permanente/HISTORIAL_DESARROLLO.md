@@ -3,6 +3,23 @@
 Este documento mantiene un registro humano legible y cronológico de todas las iteraciones, features y bugs arreglados en el proyecto.
 
 ---
+## 2026-03-30 - Sprint 7: Bimonetarismo en Compromisos y QA Automation (v1.6.0)
+
+### Evento
+El usuario requirió que el módulo de Compromisos soporte pagos cruzados (ARS y USD), permitiendo registrar la deuda originaria en una moneda y cancelarla en otra. Adicionalmente, se construyó un script E2E de simulación de datos falsos organizados y se mejoró la UX del Plan de Cuentas para forzar prefijos de moneda.
+
+### Cambios Implementados
+- **Refactorización Bimonetaria (`03_Backend_Devengado.js`)**: El "Total Imputado" de compromisos ahora posee una ecuación nativa avanzada (`SUM(FILTER(...))`) inyectada desde el Apps Script que cruza Pagos contra la "Cotización USD Venta" (`Movimientos L:L`), deduciendo la deuda equilibradamente sin impactar por inflación de cruce de monedas.
+- **Inyección y Memoria de Lote**: Se modificó `03_Backend_Devengado.js` para recibir "Moneda" desde Cargas, y se arregló un bug crítico en `_generarIdDevengado` evitando colisiones de IDs al cachear los registros en la memoria RAM antes de inyectarlos a la BD.
+- **Autogenerador QA (`QA_GeneradorMock.js`)**: Nuevo botón en menú superior que puebla en segundos los Módulos A, B y C de la hoja de Cargas con datos financieros randomizados pero vinculados lógicamente a las variables reales del Plan de Cuentas (sorteando reglas DataValidation).
+- **Prefijos Dinámicos**: Se cambió la moneda EUR por Cuenta Corriente (`CtaCte`) en el modal ABM y se programó `01_Backend_PlanCuentas.js` para prefijar mecánicamente (`ARS-`, `USD-`, `CtaCte-`) todos los Medios de Pago elegidos.
+- **Actualización Documental**: Reflejo estructural en `MODELO_DATOS.md` y `CONTEXTO_LLM.md`.
+
+### Resultado
+- El flujo de Compromisos soporta finanzas bimonetarias de grado Enterprise procesadas en O(1) vía Google Sheets Formula Engine.
+- Capa de Testing (QA) activa simplificando los bucles de desarrollo.
+
+---
 ## 2026-03-30 - Sprint 6: Refactor Tipo de Cuenta & Resumen Interanual (v1.5.0)
 
 ### Evento

@@ -1,4 +1,11 @@
 /**
+ * [2026-03-30] v1.6.0 - Sprint 7 (Bimonetarismo en Compromisos y QA Automation):
+ * - Refactor profundo en 03_Backend_Devengado.js para imputación de pagos bimonetarios usando fórmulas `FILTER` dinámicas.
+ * - Nuevo script `QA_GeneradorMock.js` expuesto en UI para simular lotes completos E2E superando Data Validation nativa.
+ * - Modificación de la UI ABM de Plan de Cuentas: prefijos dinámicos (ARS-, USD-, CtaCte-) para Medios de Pago.
+ * - Fix crítico en generador de IDs devengados, previniendo colisión en registros batch.
+ *
+ * ---
  * [2026-03-30] v1.5.0 - Sprint 6 (Refactor Tipo de Cuenta & Resumen Interanual):
  * - Nueva dimension "Tipo de cuenta" inyectada en Registros - Movimientos (Columna F).
  * - Carga_Registros modificado para inferencia O(1) de Bloques de Config hacia Tipo de Cuenta (Ingresos, Gastos, etc).
