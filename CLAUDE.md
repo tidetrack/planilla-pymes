@@ -37,17 +37,19 @@ npm run login  # clasp login — autenticación inicial con cuenta Google
 
 ---
 
-## 3. Stack Tecnológico (objetivo Next.js)
+## 3. Stack Tecnológico
 
 ```
-Framework:    Next.js 14+ (App Router) con TypeScript estricto
-Estilos:      TailwindCSS + shadcn/ui
-BD Fase 1:    Google Sheets via googleapis npm (Service Account)
-BD Fase 2:    PostgreSQL (Supabase o Railway) — migración futura
-Auth:         NextAuth.js
-Testing:      Vitest + Testing Library
-Linting:      ESLint + Prettier
+Framework:    Next.js 16 (App Router) con TypeScript estricto
+Estilos:      TailwindCSS v4 + shadcn/ui
+Base de datos: Supabase (PostgreSQL) — Project ID: fvmqbonjyfickldfqmwq
+Auth:         NextAuth.js (pendiente)
+Testing:      Vitest + Testing Library (pendiente)
+Linting:      ESLint
 ```
+
+> Google Sheets ya NO es la base de datos. Supabase es el motor desde el día 1.
+> Los scripts legacy de clasp siguen disponibles como `npm run legacy:*` para consulta.
 
 **Design System — Colores base extraídos de la planilla original:**
 ```
@@ -304,3 +306,16 @@ TideTrack Pymes opera en contexto argentino con las siguientes particularidades:
 - **CUIT/CUIL**: campo obligatorio para Clientes y Proveedores (identificación fiscal argentina)
 - **Unidades de Negocio (UEN)**: permiten análisis P&L segmentado — son la dimensión analítica más importante
 - **Proyectos**: subdivisión dentro de cada UEN, vinculan las cuentas con la realidad operativa de la empresa
+## 11. Contexto de Producto y Filosofía de Trabajo
+
+TideTrack nació como una planilla y su destino siempre fue una aplicación web.
+Este repositorio es la materialización de ese objetivo.
+
+El desarrollo es asistido por Claude Code como agente principal de ejecución.
+Las sesiones deben ser focalizadas: una tarea concreta por sesión, confirmación
+antes de ejecutar cambios estructurales, y actualización del CLAUDE.md ante
+cualquier decisión arquitectónica relevante.
+
+El usuario no tiene formación técnica formal en programación. Las explicaciones
+deben ser claras cuando se introducen conceptos nuevos. El código debe estar
+comentado en español donde el dominio financiero lo requiera.
