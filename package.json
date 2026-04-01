@@ -1,15 +1,32 @@
 {
   "name": "planilla-pymes",
-  "version": "1.0.0",
-  "description": "Tidetrack Planilla Pymes Apps Script Project",
-  "main": "index.js",
+  "version": "2.0.0",
+  "private": true,
+  "description": "TideTrack Pymes — Financial management web app for Argentine SMEs",
   "scripts": {
-    "sync": "clasp push -w",
-    "pull": "clasp pull",
-    "login": "clasp login"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "legacy:sync": "clasp push -w",
+    "legacy:pull": "clasp pull",
+    "legacy:login": "clasp login"
+  },
+  "dependencies": {
+    "next": "16.2.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@google/clasp": "^2.4.2",
-    "@types/google-apps-script": "^1.0.83"
+    "@tailwindcss/postcss": "^4",
+    "@types/google-apps-script": "^1.0.83",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
